@@ -1,0 +1,58 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "dotnet build \"${workspaceFolder}/desktop/SuratApp.csproj\" /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary",
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "publish-single-file",
+      "type": "shell",
+      "command": "dotnet publish \"${workspaceFolder}/desktop/SuratApp.csproj\" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o \"${workspaceFolder}/dist/desktop\"",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "run-desktop-app",
+      "type": "shell",
+      "command": "dotnet run --project \"${workspaceFolder}/desktop/SuratApp.csproj\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "backend-dev",
+      "type": "npm",
+      "script": "dev",
+      "path": "backend",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Ready on.*|.*Starting.*",
+          "endsPattern": ".*Ready on http://localhost:8787.*|.*http://127.0.0.1:8787.*"
+        }
+      }
+    },
+    {
+      "label": "db-migrate-local",
+      "type": "npm",
+      "script": "db:migrate:local",
+      "path": "backend",
+      "problemMatcher": []
+    },
+    {
+      "label": "db-seed-local",
+      "type": "npm",
+      "script": "db:seed:local",
+      "path": "backend",
+      "problemMatcher": []
+    }
+  ]
+}

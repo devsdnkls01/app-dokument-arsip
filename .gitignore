@@ -1,0 +1,33 @@
+# .gitignore for Monorepo (Cloudflare Workers + .NET WPF)
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Backend (Node / Cloudflare Workers)
+backend/node_modules/
+backend/dist/
+backend/.wrangler/
+backend/.env
+backend/.env.local
+*.log
+
+# Desktop (.NET / WPF)
+dist/
+desktop/bin/
+desktop/obj/
+desktop/*.user
+desktop/*.suo
+desktop/TestResults/
+*.tmp
+*.docx
+!desktop/Templates/*.docx

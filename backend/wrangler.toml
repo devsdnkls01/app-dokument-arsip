@@ -1,0 +1,17 @@
+name = "document-archive-backend"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+
+[vars]
+CLOUDINARY_CLOUD_NAME = "demo"
+CLOUDINARY_API_KEY = "123456789012345"
+# Catatan: CLOUDINARY_API_SECRET sebaiknya dimasukkan lewat:
+# `npx wrangler secret put CLOUDINARY_API_SECRET` saat production.
+# Untuk dev lokal, bisa disimpan di .dev.vars
+CLOUDINARY_API_SECRET = "sample_secret_key"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dokumen_db"
+database_id = "local-d1-dokumen-database-id"
+migrations_dir = "migrations"

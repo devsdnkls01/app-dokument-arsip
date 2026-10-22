@@ -1,0 +1,22 @@
+{
+  "name": "document-archive-backend",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers Hono API for Dynamic Document Automation & Archive System",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "db:migrate:local": "wrangler d1 execute DB --local --file=./migrations/0001_init.sql",
+    "db:seed:local": "wrangler d1 execute DB --local --file=./migrations/seed.sql",
+    "db:migrate:remote": "wrangler d1 execute DB --remote --file=./migrations/0001_init.sql",
+    "db:seed:remote": "wrangler d1 execute DB --remote --file=./migrations/seed.sql"
+  },
+  "dependencies": {
+    "hono": "^4.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240405.0",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.50.0"
+  }
+}

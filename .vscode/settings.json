@@ -1,0 +1,19 @@
+{
+  "dotnet.dotnetPath": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet",
+  "omnisharp.dotnetPath": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet",
+  "csharp.dotnetPath": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet",
+  "dotnetAcquisitionExtension.existingDotnetPath": [
+    {
+      "extensionId": "ms-dotnettools.csharp",
+      "path": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet\\dotnet.exe"
+    },
+    {
+      "extensionId": "ms-dotnettools.csdevkit",
+      "path": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet\\dotnet.exe"
+    }
+  ],
+  "terminal.integrated.env.windows": {
+    "PATH": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet;${env:PATH}",
+    "DOTNET_ROOT": "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\dotnet"
+  }
+}

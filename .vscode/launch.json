@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1. Launch WPF Desktop App (.NET Core)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/desktop/bin/Debug/net8.0-windows/win-x64/SuratApp.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/desktop",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "env": {
+        "DOTNET_ROOT": "${env:LocalAppData}/Microsoft/dotnet",
+        "PATH": "${env:LocalAppData}/Microsoft/dotnet;${env:PATH}"
+      }
+    },
+    {
+      "name": "2. Launch Backend API (Wrangler Dev)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/backend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "3. Launch Standalone .exe (Release)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "publish-single-file",
+      "program": "${workspaceFolder}/dist/desktop/SuratApp.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/dist/desktop",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "env": {
+        "DOTNET_ROOT": "${env:LocalAppData}/Microsoft/dotnet",
+        "PATH": "${env:LocalAppData}/Microsoft/dotnet;${env:PATH}"
+      }
+    },
+    {
+      "name": "4. Attach to Running .NET Process",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🚀 Fullstack: Backend API + Desktop App",
+      "configurations": [
+        "2. Launch Backend API (Wrangler Dev)",
+        "1. Launch WPF Desktop App (.NET Core)"
+      ],
+      "stopAll": true
+    }
+  ]
+}
