@@ -4,7 +4,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "dotnet build \"${workspaceFolder}/desktop/SuratApp.csproj\" /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary",
+      "command": "dotnet build \"${workspaceFolder}/desktop/ClientApp/ClientApp.csproj\" /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary",
       "problemMatcher": "$msCompile",
       "group": {
         "kind": "build",
@@ -12,15 +12,21 @@
       }
     },
     {
+      "label": "build-console",
+      "type": "shell",
+      "command": "dotnet build \"${workspaceFolder}/desktop/CoreProvisioningConsole/CoreProvisioningConsole.csproj\" /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary",
+      "problemMatcher": "$msCompile"
+    },
+    {
       "label": "publish-single-file",
       "type": "shell",
-      "command": "dotnet publish \"${workspaceFolder}/desktop/SuratApp.csproj\" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o \"${workspaceFolder}/dist/desktop\"",
-      "problemMatcher": "$msCompile"
+      "command": "cmd /c \"${workspaceFolder}/build-exe.bat\"",
+      "problemMatcher": []
     },
     {
       "label": "run-desktop-app",
       "type": "shell",
-      "command": "dotnet run --project \"${workspaceFolder}/desktop/SuratApp.csproj\"",
+      "command": "dotnet run --project \"${workspaceFolder}/desktop/ClientApp/ClientApp.csproj\"",
       "problemMatcher": []
     },
     {

@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>ClientApp</RootNamespace>
+    <AssemblyName>ClientApp</AssemblyName>
+
+    <!-- Windows Official Identity & Assembly Metadata -->
+    <Company>Sovereign Enterprise Software Systems</Company>
+    <Product>Sovereign Executive Office &amp; Document Automation Suite</Product>
+    <Copyright>Copyright © 2026 Sovereign Enterprise. All rights reserved.</Copyright>
+    <FileVersion>3.0.0.0</FileVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <Description>Closed-Ecosystem B2B/B2G Multi-Tenant Document Automation, RAB Proposal, and Institutional Archive Suite</Description>
+    <Authors>Principal Software Architecture Team</Authors>
+
+    <!-- Single File Executable Publishing Configuration -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <!-- Anti-Inspection & Production Hardening -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Modern Fluent Design System (Windows 11 Aesthetic) -->
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+    <!-- Network & JSON Serialization -->
+    <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
+    <!-- Local Image Compression Engine -->
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**\*" />
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+</Project>

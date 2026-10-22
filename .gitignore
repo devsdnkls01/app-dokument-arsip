@@ -23,11 +23,15 @@ backend/.env.local
 
 # Desktop (.NET / WPF)
 dist/
-desktop/bin/
-desktop/obj/
-desktop/*.user
-desktop/*.suo
-desktop/TestResults/
+**/bin/
+**/obj/
+bin/
+obj/
+*.user
+*.suo
+**/TestResults/
 *.tmp
 *.docx
 !desktop/Templates/*.docx
+node_state.dat
+

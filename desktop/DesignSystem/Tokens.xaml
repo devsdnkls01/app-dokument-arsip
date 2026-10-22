@@ -1,0 +1,166 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ================================================================= -->
+    <!-- ENTERPRISE FORMAL DESIGN TOKENS (LIGHT & DARK SYSTEM)            -->
+    <!-- No hardcoded hex values in views. Zero Neon. Slate & Navy Focus. -->
+    <!-- ================================================================= -->
+
+    <!-- SPACING SCALE (4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 px) -->
+    <system:Double x:Key="Space4">4</system:Double>
+    <system:Double x:Key="Space8">8</system:Double>
+    <system:Double x:Key="Space12">12</system:Double>
+    <system:Double x:Key="Space16">16</system:Double>
+    <system:Double x:Key="Space20">20</system:Double>
+    <system:Double x:Key="Space24">24</system:Double>
+    <system:Double x:Key="Space32">32</system:Double>
+    <system:Double x:Key="Space40">40</system:Double>
+
+    <Thickness x:Key="Spacing4">4</Thickness>
+    <Thickness x:Key="Spacing8">8</Thickness>
+    <Thickness x:Key="Spacing12">12</Thickness>
+    <Thickness x:Key="Spacing16">16</Thickness>
+    <Thickness x:Key="Spacing20">20</Thickness>
+    <Thickness x:Key="Spacing24">24</Thickness>
+    <Thickness x:Key="Spacing32">32</Thickness>
+
+    <!-- CORNER RADIUS TOKENS -->
+    <CornerRadius x:Key="RadiusSmall">4</CornerRadius>
+    <CornerRadius x:Key="RadiusMedium">8</CornerRadius>
+    <CornerRadius x:Key="RadiusLarge">12</CornerRadius>
+    <CornerRadius x:Key="RadiusPill">999</CornerRadius>
+
+    <!-- CORE ENTERPRISE PALETTE (FORMAL NAVY & SLATE) -->
+    <Color x:Key="EnterprisePrimaryColor">#1E3A8A</Color>       <!-- Deep Navy 900 -->
+    <Color x:Key="EnterpriseAccentColor">#2563EB</Color>        <!-- Royal Blue 600 -->
+    <Color x:Key="EnterpriseAccentHoverColor">#1D4ED8</Color>   <!-- Royal Blue 700 -->
+
+    <Color x:Key="TextPrimaryColor">#0F172A</Color>             <!-- Slate 900 -->
+    <Color x:Key="TextSecondaryColor">#475569</Color>           <!-- Slate 600 -->
+    <Color x:Key="TextMutedColor">#64748B</Color>               <!-- Slate 500 -->
+    <Color x:Key="TextDisabledColor">#94A3B8</Color>            <!-- Slate 400 -->
+
+    <Color x:Key="SurfaceAppBgColor">#F8FAFC</Color>            <!-- Slate 50 -->
+    <Color x:Key="SurfaceCardColor">#FFFFFF</Color>             <!-- White -->
+    <Color x:Key="SurfaceCardSecondaryColor">#F1F5F9</Color>    <!-- Slate 100 -->
+    <Color x:Key="BorderLightColor">#E2E8F0</Color>             <!-- Slate 200 -->
+    <Color x:Key="BorderSubtleColor">#CBD5E1</Color>            <!-- Slate 300 -->
+
+    <!-- SEMANTIC STATUS COLORS: SUCCESS (EMERALD) -->
+    <Color x:Key="StatusSuccessFgColor">#047857</Color>         <!-- Emerald 700 -->
+    <Color x:Key="StatusSuccessBgColor">#ECFDF5</Color>         <!-- Emerald 50 -->
+    <Color x:Key="StatusSuccessBorderColor">#A7F3D0</Color>     <!-- Emerald 200 -->
+    <Color x:Key="StatusSuccessDotColor">#10B981</Color>        <!-- Emerald 500 -->
+
+    <!-- SEMANTIC STATUS COLORS: WARNING (AMBER) -->
+    <Color x:Key="StatusWarningFgColor">#B45309</Color>         <!-- Amber 700 -->
+    <Color x:Key="StatusWarningBgColor">#FFFBEB</Color>         <!-- Amber 50 -->
+    <Color x:Key="StatusWarningBorderColor">#FDE68A</Color>     <!-- Amber 200 -->
+    <Color x:Key="StatusWarningDotColor">#F59E0B</Color>        <!-- Amber 500 -->
+
+    <!-- SEMANTIC STATUS COLORS: DANGER (CRIMSON) -->
+    <Color x:Key="StatusDangerFgColor">#B91C1C</Color>          <!-- Red 700 -->
+    <Color x:Key="StatusDangerBgColor">#FEF2F2</Color>          <!-- Red 50 -->
+    <Color x:Key="StatusDangerBorderColor">#FECACA</Color>      <!-- Red 200 -->
+    <Color x:Key="StatusDangerDotColor">#EF4444</Color>         <!-- Red 500 -->
+
+    <!-- SEMANTIC STATUS COLORS: INFO / NEUTRAL (SAPPHIRE / SLATE) -->
+    <Color x:Key="StatusInfoFgColor">#1D4ED8</Color>            <!-- Blue 700 -->
+    <Color x:Key="StatusInfoBgColor">#EFF6FF</Color>            <!-- Blue 50 -->
+    <Color x:Key="StatusInfoBorderColor">#BFDBFE</Color>        <!-- Blue 200 -->
+    <Color x:Key="StatusInfoDotColor">#3B82F6</Color>           <!-- Blue 500 -->
+
+    <Color x:Key="StatusNeutralFgColor">#475569</Color>         <!-- Slate 600 -->
+    <Color x:Key="StatusNeutralBgColor">#F1F5F9</Color>         <!-- Slate 100 -->
+    <Color x:Key="StatusNeutralBorderColor">#CBD5E1</Color>     <!-- Slate 300 -->
+    <Color x:Key="StatusNeutralDotColor">#94A3B8</Color>        <!-- Slate 400 -->
+
+    <!-- TIER CHIP SPECIFIC PALETTE -->
+    <!-- Trial Tier (Slate Gray) -->
+    <Color x:Key="TierTrialFgColor">#475569</Color>
+    <Color x:Key="TierTrialBgColor">#F1F5F9</Color>
+    <Color x:Key="TierTrialBorderColor">#CBD5E1</Color>
+
+    <!-- Basic Tier (Cyan / Teal) -->
+    <Color x:Key="TierBasicFgColor">#0E7490</Color>
+    <Color x:Key="TierBasicBgColor">#ECFEFF</Color>
+    <Color x:Key="TierBasicBorderColor">#A5F3FC</Color>
+
+    <!-- Standard Tier (Blue) -->
+    <Color x:Key="TierStandardFgColor">#1D4ED8</Color>
+    <Color x:Key="TierStandardBgColor">#EFF6FF</Color>
+    <Color x:Key="TierStandardBorderColor">#BFDBFE</Color>
+
+    <!-- Professional Tier (Indigo / Purple) -->
+    <Color x:Key="TierProFgColor">#4338CA</Color>
+    <Color x:Key="TierProBgColor">#EEF2FF</Color>
+    <Color x:Key="TierProBorderColor">#C7D2FE</Color>
+
+    <!-- Enterprise Tier (Emerald Deep) -->
+    <Color x:Key="TierEnterpriseFgColor">#065F46</Color>
+    <Color x:Key="TierEnterpriseBgColor">#ECFDF5</Color>
+    <Color x:Key="TierEnterpriseBorderColor">#A7F3D0</Color>
+
+    <!-- BRUSH DEFINITIONS (DYNAMIC TOKEN BINDINGS) -->
+    <SolidColorBrush x:Key="EnterprisePrimaryBrush" Color="{StaticResource EnterprisePrimaryColor}"/>
+    <SolidColorBrush x:Key="EnterpriseAccentBrush" Color="{StaticResource EnterpriseAccentColor}"/>
+    <SolidColorBrush x:Key="EnterpriseAccentHoverBrush" Color="{StaticResource EnterpriseAccentHoverColor}"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}"/>
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource TextDisabledColor}"/>
+
+    <SolidColorBrush x:Key="SurfaceAppBgBrush" Color="{StaticResource SurfaceAppBgColor}"/>
+    <SolidColorBrush x:Key="SurfaceCardBrush" Color="{StaticResource SurfaceCardColor}"/>
+    <SolidColorBrush x:Key="SurfaceCardSecondaryBrush" Color="{StaticResource SurfaceCardSecondaryColor}"/>
+    <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLightColor}"/>
+    <SolidColorBrush x:Key="BorderSubtleBrush" Color="{StaticResource BorderSubtleColor}"/>
+
+    <SolidColorBrush x:Key="StatusSuccessFgBrush" Color="{StaticResource StatusSuccessFgColor}"/>
+    <SolidColorBrush x:Key="StatusSuccessBgBrush" Color="{StaticResource StatusSuccessBgColor}"/>
+    <SolidColorBrush x:Key="StatusSuccessBorderBrush" Color="{StaticResource StatusSuccessBorderColor}"/>
+    <SolidColorBrush x:Key="StatusSuccessDotBrush" Color="{StaticResource StatusSuccessDotColor}"/>
+
+    <SolidColorBrush x:Key="StatusWarningFgBrush" Color="{StaticResource StatusWarningFgColor}"/>
+    <SolidColorBrush x:Key="StatusWarningBgBrush" Color="{StaticResource StatusWarningBgColor}"/>
+    <SolidColorBrush x:Key="StatusWarningBorderBrush" Color="{StaticResource StatusWarningBorderColor}"/>
+    <SolidColorBrush x:Key="StatusWarningDotBrush" Color="{StaticResource StatusWarningDotColor}"/>
+
+    <SolidColorBrush x:Key="StatusDangerFgBrush" Color="{StaticResource StatusDangerFgColor}"/>
+    <SolidColorBrush x:Key="StatusDangerBgBrush" Color="{StaticResource StatusDangerBgColor}"/>
+    <SolidColorBrush x:Key="StatusDangerBorderBrush" Color="{StaticResource StatusDangerBorderColor}"/>
+    <SolidColorBrush x:Key="StatusDangerDotBrush" Color="{StaticResource StatusDangerDotColor}"/>
+
+    <SolidColorBrush x:Key="StatusInfoFgBrush" Color="{StaticResource StatusInfoFgColor}"/>
+    <SolidColorBrush x:Key="StatusInfoBgBrush" Color="{StaticResource StatusInfoBgColor}"/>
+    <SolidColorBrush x:Key="StatusInfoBorderBrush" Color="{StaticResource StatusInfoBorderColor}"/>
+    <SolidColorBrush x:Key="StatusInfoDotBrush" Color="{StaticResource StatusInfoDotColor}"/>
+
+    <SolidColorBrush x:Key="StatusNeutralFgBrush" Color="{StaticResource StatusNeutralFgColor}"/>
+    <SolidColorBrush x:Key="StatusNeutralBgBrush" Color="{StaticResource StatusNeutralBgColor}"/>
+    <SolidColorBrush x:Key="StatusNeutralBorderBrush" Color="{StaticResource StatusNeutralBorderColor}"/>
+    <SolidColorBrush x:Key="StatusNeutralDotBrush" Color="{StaticResource StatusNeutralDotColor}"/>
+
+    <SolidColorBrush x:Key="TierTrialFgBrush" Color="{StaticResource TierTrialFgColor}"/>
+    <SolidColorBrush x:Key="TierTrialBgBrush" Color="{StaticResource TierTrialBgColor}"/>
+    <SolidColorBrush x:Key="TierTrialBorderBrush" Color="{StaticResource TierTrialBorderColor}"/>
+
+    <SolidColorBrush x:Key="TierBasicFgBrush" Color="{StaticResource TierBasicFgColor}"/>
+    <SolidColorBrush x:Key="TierBasicBgBrush" Color="{StaticResource TierBasicBgColor}"/>
+    <SolidColorBrush x:Key="TierBasicBorderBrush" Color="{StaticResource TierBasicBorderColor}"/>
+
+    <SolidColorBrush x:Key="TierStandardFgBrush" Color="{StaticResource TierStandardFgColor}"/>
+    <SolidColorBrush x:Key="TierStandardBgBrush" Color="{StaticResource TierStandardBgColor}"/>
+    <SolidColorBrush x:Key="TierStandardBorderBrush" Color="{StaticResource TierStandardBorderColor}"/>
+
+    <SolidColorBrush x:Key="TierProFgBrush" Color="{StaticResource TierProFgColor}"/>
+    <SolidColorBrush x:Key="TierProBgBrush" Color="{StaticResource TierProBgColor}"/>
+    <SolidColorBrush x:Key="TierProBorderBrush" Color="{StaticResource TierProBorderColor}"/>
+
+    <SolidColorBrush x:Key="TierEnterpriseFgBrush" Color="{StaticResource TierEnterpriseFgColor}"/>
+    <SolidColorBrush x:Key="TierEnterpriseBgBrush" Color="{StaticResource TierEnterpriseBgColor}"/>
+    <SolidColorBrush x:Key="TierEnterpriseBorderBrush" Color="{StaticResource TierEnterpriseBorderColor}"/>
+
+</ResourceDictionary>

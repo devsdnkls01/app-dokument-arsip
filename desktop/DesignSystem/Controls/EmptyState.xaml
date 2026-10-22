@@ -1,0 +1,46 @@
+<UserControl x:Class="DesignSystem.Controls.EmptyState"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Name="RootEmpty">
+    <Border Padding="32" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="440">
+            <!-- Icon with circular accent background -->
+            <Border Background="{DynamicResource SurfaceCardSecondaryBrush}"
+                    BorderBrush="{DynamicResource BorderLightBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource RadiusPill}"
+                    Width="64" Height="64"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,16">
+                <ui:SymbolIcon Symbol="{Binding ElementName=RootEmpty, Path=Icon}"
+                               FontSize="28"
+                               Foreground="{DynamicResource TextMutedBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+            </Border>
+
+            <!-- Title -->
+            <TextBlock Text="{Binding ElementName=RootEmpty, Path=Title}"
+                       Style="{StaticResource SubtitleStyle}"
+                       FontSize="16"
+                       TextAlignment="Center"
+                       Margin="0,0,0,6"/>
+
+            <!-- Message -->
+            <TextBlock Text="{Binding ElementName=RootEmpty, Path=Message}"
+                       Style="{StaticResource BodyMutedStyle}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,16"/>
+
+            <!-- Optional Action Button -->
+            <ui:Button Appearance="Secondary"
+                       Command="{Binding ElementName=RootEmpty, Path=ActionCommand}"
+                       Content="{Binding ElementName=RootEmpty, Path=ActionText}"
+                       Visibility="{Binding ElementName=RootEmpty, Path=HasAction, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       HorizontalAlignment="Center"
+                       Padding="16,8"/>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,59 @@
+<UserControl x:Class="DesignSystem.Controls.KpiCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Name="RootKpi">
+    <Border Background="{DynamicResource SurfaceCardBrush}"
+            BorderBrush="{DynamicResource BorderLightBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusMedium}"
+            Padding="18,16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top Row: Title + Icon Badge -->
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{Binding ElementName=RootKpi, Path=Title}"
+                           Style="{StaticResource CaptionStyle}"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextMutedBrush}"
+                           VerticalAlignment="Center"/>
+
+                <Border Grid.Column="1"
+                        Background="{Binding ElementName=RootKpi, Path=BadgeBackground}"
+                        CornerRadius="{StaticResource RadiusSmall}"
+                        Width="32" Height="32"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                    <ui:SymbolIcon Symbol="{Binding ElementName=RootKpi, Path=Icon}"
+                                   FontSize="16"
+                                   Foreground="{Binding ElementName=RootKpi, Path=BadgeForeground}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+
+            <!-- Middle Row: Value -->
+            <TextBlock Grid.Row="1"
+                       Text="{Binding ElementName=RootKpi, Path=Value}"
+                       Style="{StaticResource DisplayStyle}"
+                       FontSize="26"
+                       Margin="0,0,0,4"/>
+
+            <!-- Bottom Row: Subtitle / Description -->
+            <TextBlock Grid.Row="2"
+                       Text="{Binding ElementName=RootKpi, Path=Description}"
+                       Style="{StaticResource CaptionStyle}"
+                       TextWrapping="Wrap"/>
+        </Grid>
+    </Border>
+</UserControl>

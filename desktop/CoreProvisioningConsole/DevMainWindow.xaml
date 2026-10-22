@@ -1,0 +1,193 @@
+<ui:FluentWindow x:Class="DeveloperStudio.DevMainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    xmlns:views="clr-namespace:CoreProvisioningConsole.Views"
+                    Title="Konsol Provisioning – Pusat Kendali Lisensi"
+                    Icon="pack://application:,,,/DesignSystem;component/Assets/logo.png"
+                    Height="860" Width="1380"
+                    MinHeight="720" MinWidth="1100"
+                    WindowStartupLocation="CenterScreen"
+                    WindowBackdropType="Mica"
+                    ExtendsContentIntoTitleBar="True">
+
+    <Grid Background="{DynamicResource SurfaceAppBgBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- TitleBar -->
+            <RowDefinition Height="*"/>    <!-- Work Area -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. MODERN FLUENT TITLEBAR WITH PERMANENT LOGO -->
+        <ui:TitleBar Grid.Row="0"
+                     Title="Konsol Provisioning – Pusat Kendali Lisensi">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/DesignSystem;component/Assets/logo.png" Width="18" Height="18"/>
+            </ui:TitleBar.Icon>
+            <ui:TitleBar.Header>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,14,0" HorizontalAlignment="Right">
+                    <Border Background="{DynamicResource StatusSuccessBgBrush}"
+                            BorderBrush="{DynamicResource StatusSuccessBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource RadiusPill}"
+                            Padding="8,2"
+                            Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Ellipse Width="6" Height="6" Fill="{DynamicResource StatusSuccessDotBrush}" Margin="0,0,6,0"/>
+                            <TextBlock Text="Node D1 Terhubung" Style="{StaticResource CaptionStyle}" Foreground="{DynamicResource StatusSuccessFgBrush}" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <ui:Button Appearance="Transparent"
+                               ToolTip="Ganti Tema (Terang / Gelap)"
+                               Click="OnToggleThemeClick"
+                               Padding="6,4">
+                        <ui:SymbolIcon Symbol="DarkTheme24" FontSize="14"/>
+                    </ui:Button>
+                </StackPanel>
+            </ui:TitleBar.Header>
+        </ui:TitleBar>
+
+        <!-- 2. MAIN WORKSPACE WITH FLUENT NAVIGATION VIEW -->
+        <Grid Grid.Row="1">
+            <ui:NavigationView x:Name="RootNav"
+                               PaneDisplayMode="Left"
+                               IsBackButtonVisible="Collapsed"
+                               SelectionChanged="OnNavSelectionChanged">
+
+                <!-- Header / Brand Profile inside Navigation with Official Logo -->
+                <ui:NavigationView.Header>
+                    <Border Padding="14,14" BorderBrush="{DynamicResource BorderLightBrush}" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Width="44" Height="44"
+                                    CornerRadius="{StaticResource RadiusNormal}"
+                                    Background="#FFFFFF"
+                                    BorderBrush="{DynamicResource BorderLightBrush}"
+                                    BorderThickness="1"
+                                    Margin="0,0,12,0"
+                                    ClipToBounds="True">
+                                <Image Source="pack://application:,,,/DesignSystem;component/Assets/logo.png"
+                                       Width="40" Height="40"
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </Border>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <Border Background="{DynamicResource EnterpriseAccentBrush}" CornerRadius="{StaticResource RadiusSmall}" Padding="5,1" HorizontalAlignment="Left" Margin="0,0,0,4">
+                                    <TextBlock Text="CENTRAL PROVISIONING" FontSize="8.5" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                </Border>
+                                <TextBlock Text="Pusat Kendali Lisensi" Style="{StaticResource TitleStyle}" FontSize="14" FontWeight="SemiBold"/>
+                                <TextBlock Text="Sovereign Executive Systems" Style="{StaticResource CaptionStyle}" FontSize="11"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </ui:NavigationView.Header>
+
+                <!-- Navigation Items -->
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Lisensi &amp; Upgrade Instan"
+                                           Tag="licenses"
+                                           IsActive="True">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Key24"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Pengaturan Paket &amp; Harga"
+                                           Tag="tiers">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Tag24"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Iklan, Banner &amp; Teks Jalan"
+                                           Tag="broadcast">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Megaphone24"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Direktori Instansi &amp; Kuota"
+                                           Tag="tenants">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="Building24"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Reset Password User"
+                                           Tag="rescue">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="PersonKey24"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Master Preset Template"
+                                           Tag="presets">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:SymbolIcon Symbol="DocumentCopy24"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+                </ui:NavigationView.MenuItems>
+
+                <!-- Footer Items: Environment Status -->
+                <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem IsEnabled="False">
+                        <ui:NavigationViewItem.Content>
+                            <StackPanel Margin="0,4">
+                                <TextBlock Text="🟢 Node D1 Online" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource StatusSuccessFgBrush}"/>
+                                <TextBlock Text="Auth: Master Token Verified" FontSize="9" Foreground="{DynamicResource TextMutedBrush}"/>
+                                <TextBlock Text="v3.0.0 Enterprise" FontSize="9" Foreground="{DynamicResource TextMutedBrush}"/>
+                            </StackPanel>
+                        </ui:NavigationViewItem.Content>
+                    </ui:NavigationViewItem>
+                </ui:NavigationView.FooterMenuItems>
+
+                <!-- Navigation Content: Tab Panels -->
+                <ui:NavigationView.ContentOverlay>
+                    <Grid>
+                        <!-- 1. Licenses View -->
+                        <views:LicensesView x:Name="ViewLicenses"
+                                            DataContext="{Binding LicensesVM}"
+                                            Visibility="Visible"/>
+
+                        <!-- 2. Tiers View -->
+                        <views:TiersView x:Name="ViewTiers"
+                                         DataContext="{Binding TiersVM}"
+                                         Visibility="Collapsed"/>
+
+                        <!-- 3. Broadcast View -->
+                        <views:BroadcastView x:Name="ViewBroadcast"
+                                             DataContext="{Binding BroadcastVM}"
+                                             Visibility="Collapsed"/>
+
+                        <!-- 4. Tenants View -->
+                        <views:TenantsView x:Name="ViewTenants"
+                                           DataContext="{Binding TenantsVM}"
+                                           Visibility="Collapsed"/>
+
+                        <!-- 5. Rescue View -->
+                        <views:RescueView x:Name="ViewRescue"
+                                          DataContext="{Binding RescueVM}"
+                                          Visibility="Collapsed"/>
+
+                        <!-- 6. Presets View -->
+                        <views:PresetsView x:Name="ViewPresets"
+                                           DataContext="{Binding PresetsVM}"
+                                           Visibility="Collapsed"/>
+                    </Grid>
+                </ui:NavigationView.ContentOverlay>
+            </ui:NavigationView>
+
+            <!-- Global Toast Snackbar Presenter -->
+            <ui:SnackbarPresenter x:Name="MainSnackbarPresenter"
+                                  VerticalAlignment="Bottom"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,0,0,24"/>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

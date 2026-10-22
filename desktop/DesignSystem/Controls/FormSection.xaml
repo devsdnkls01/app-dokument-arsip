@@ -1,0 +1,22 @@
+<UserControl x:Class="DesignSystem.Controls.FormSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="RootSection">
+    <Border Background="{DynamicResource SurfaceCardBrush}"
+            BorderBrush="{DynamicResource BorderLightBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusMedium}"
+            Padding="20"
+            Margin="0,0,0,16">
+        <StackPanel>
+            <TextBlock Text="{Binding ElementName=RootSection, Path=Title}"
+                       Style="{StaticResource SubtitleStyle}"
+                       Margin="0,0,0,4"/>
+            <TextBlock Text="{Binding ElementName=RootSection, Path=Description}"
+                       Style="{StaticResource BodyMutedStyle}"
+                       Visibility="{Binding ElementName=RootSection, Path=HasDescription, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Margin="0,0,0,16"/>
+            <ContentPresenter Content="{Binding ElementName=RootSection, Path=SectionContent}"/>
+        </StackPanel>
+    </Border>
+</UserControl>

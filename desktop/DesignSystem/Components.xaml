@@ -1,0 +1,18 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:DesignSystem.Converters"
+                    xmlns:controls="clr-namespace:DesignSystem.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/DesignSystem;component/Tokens.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/DesignSystem;component/Typography.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- GLOBAL VALUE CONVERTERS -->
+    <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <conv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    <conv:NullOrEmptyToPlaceholderConverter x:Key="NullOrEmptyToPlaceholderConverter"/>
+    <conv:NullOrEmptyToDimmedBrushConverter x:Key="NullOrEmptyToDimmedBrushConverter"/>
+    <conv:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter"/>
+
+</ResourceDictionary>

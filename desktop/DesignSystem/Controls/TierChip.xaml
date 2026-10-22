@@ -1,0 +1,26 @@
+<UserControl x:Class="DesignSystem.Controls.TierChip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Name="RootChip">
+    <Border Background="{Binding ElementName=RootChip, Path=CurrentBackground}"
+            BorderBrush="{Binding ElementName=RootChip, Path=CurrentBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusPill}"
+            Padding="8,2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <ui:SymbolIcon Symbol="{Binding ElementName=RootChip, Path=CurrentIcon}"
+                           FontSize="11"
+                           Foreground="{Binding ElementName=RootChip, Path=CurrentForeground}"
+                           Margin="0,0,4,0"
+                           VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding ElementName=RootChip, Path=DisplayName}"
+                       Foreground="{Binding ElementName=RootChip, Path=CurrentForeground}"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</UserControl>

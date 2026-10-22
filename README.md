@@ -1,21 +1,76 @@
-# Sistem Otomasi Dokumen & Manajemen Arsip Digital (DocuFlow Pro)
+# SOVEREIGN EXECUTIVE SUITE: ENTERPRISE MULTI-TENANT DOCUMENT AUTOMATION & CLOSED-ECOSYSTEM OFFICE SUITE
 
-Sistem otomasi pembuatan dokumen dan surat dinamis berbasis monorepo yang menggabungkan aplikasi desktop **C# (.NET 8 WPF)** mandiri (*Single-File Executable*) dengan backend serverless **Hono + Cloudflare Workers (D1 SQLite)** dan penyimpanan aset **Cloudinary**.
+<p align="center">
+  <img src="desktop/DesignSystem/Assets/logo.png" alt="Sovereign Executive Suite Logo" width="160" height="160" />
+</p>
+
+<p align="center">
+  <strong>Ekosistem Tertutup (Closed-Ecosystem Desktop SaaS) Otomasi Persuratan, Proposal RAB, Manajemen SDM Adaptif, dan Manajemen Arsip Kedinasan Berbasis Cloud (Multi-Tenant)</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-8.0%20WPF-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 8.0" />
+  <img src="https://img.shields.io/badge/UI%2FUX-WPF--UI%20Fluent%20Design-0078D4?style=flat-square&logo=windows11&logoColor=white" alt="WPF-UI Fluent" />
+  <img src="https://img.shields.io/badge/Backend-Cloudflare%20Workers%20%2B%20Hono-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers" />
+  <img src="https://img.shields.io/badge/Database-Cloudflare%20D1%20SQLite%20Edge-0051C3?style=flat-square&logo=sqlite&logoColor=white" alt="Cloudflare D1" />
+  <img src="https://img.shields.io/badge/Security-Authenticode%20Code%20Signed-059669?style=flat-square" alt="Authenticode Signed" />
+</p>
 
 ---
 
-## 🏛️ 8 Modul Arsitektur Sistem
+## 🏛️ Gambaran Umum Ekosistem
 
-| No | Modul / Area Sistem | Fitur Implementasi | Manfaat Utama |
-|---|---|---|---|
-| **1** | **Aplikasi Desktop (.exe)** | • Skrip build lokal 1-klik ([`build.bat`](file:///b:/WEBSITE/.dokument-arsip/build.bat))<br>• Penyimpanan draf offline ([`OfflineDrafts.json`](file:///b:/WEBSITE/.dokument-arsip/desktop/Services/LocalDraftService.cs)) | Kontrol penuh build di PC sendiri tanpa antrean GitHub. Staf tetap bisa mengetik draf saat internet putus. |
-| **2** | **Distribusi & Auto-Update** | • Tabel versi di Cloudflare D1 (`app_versions`)<br>• Banner notifikasi versi baru & link unduh langsung dari Cloudinary/Drive/LAN | Distribusi update tanpa perlu akun GitHub untuk guru / staf TU. |
-| **3** | **Format & Menu Dinamis** | • Auto-scanner placeholder `{{...}}` langsung dari berkas template master `.docx` | Otomatis membuat draf form input tanpa perlu mengetik satu per satu di database. |
-| **4** | **Backend & Auto-Numbering** | • Cloudflare Workers (Hono) 24/7 di Edge<br>• Penomoran surat berurutan secara atomic di D1<br>• Audit logging pembuat surat | Mencegah nomor surat ganda (*double number*) antar komputer staf. |
-| **5** | **Validasi Keaslian QR Code** | • Pustaka QRCoder menyematkan gambar QR Code otomatis di dalam dokumen `.docx`<br>• Halaman verifikasi publik di `/verify/:docId` | Mencegah pemalsuan surat. Pihak luar cukup scan dengan kamera HP untuk cek keabsahan surat & scan basah. |
-| **6** | **Arsip Dokumen & Buku Agenda** | • Pencarian instan per nomor & perihal surat<br>• Tombol **Ekspor Buku Agenda (Excel / CSV)** | Merekap agenda surat keluar bulanan secara otomatis tanpa buku manual. |
-| **7** | **Arsip Scan Basah & Kompresi** | • Dropzone drag-and-drop berkas PDF/JPG<br>• Kompresi otomatis Cloudinary<br>• Label warna status (Merah = Belum scan, Hijau = Lengkap) | Memudahkan pemantauan surat yang belum diserahkan bukti fisik stempel basahnya. |
-| **8** | **Keamanan & Deployment** | • Proteksi PIN API (`X-App-Pin`) di setiap request tulis<br>• Deploy 1-klik via Wrangler CLI ([`deploy.bat`](file:///b:/WEBSITE/.dokument-arsip/deploy.bat)) | GitHub hanya sebagai cadangan kode sumber. Deploy langsung cepat & aman dari akses luar tak berizin. |
+**Sovereign Executive Suite** adalah rangkaian produk piranti lunak komersial skala enterprise (**B2B & B2G**) yang dirancang untuk instansi pemerintah desa, sekolah/institusi pendidikan, dinas, yayasan, korporasi swasta, hingga rumah sakit/klinik. Seluruh infrastruktur database dan penyimpanan berkas beroperasi terpusat di Cloudflare D1 dan Cloudinary, namun terisolasi secara ketat per instansi (`tenant_id`).
+
+### 3 Pilar Utama Komponen Sistem:
+
+1. **Backend Serverless Edge (`/backend`)**:
+   - Ditenagai oleh **Cloudflare Workers** + **Hono** (TypeScript) berlatensi ultra-rendah di jaringan edge global Cloudflare.
+   - Database terdistribusi **Cloudflare D1 (SQLite Edge)** dengan skema isolasi data *Multi-Tenant*.
+   - Otentikasi sesi via **JWT (Web Crypto API)** dengan hashing kata sandi **PBKDF2/SHA-256 + Salt**.
+   - Otentikasi tanda tangan berkas langsung terenkripsi ke **Cloudinary Storage**.
+
+2. **Pustaka Bersama (`/desktop/DesignSystem`)**:
+   - Class Library WPF (`net8.0-windows`) berdesain **Windows 11 Fluent Design** dengan backdrop material **Mica**.
+   - Terpusat pada design tokens: `Tokens.xaml`, `Typography.xaml` (*Segoe UI Variable*), serta skala jarak 4/8/12/16/24/32 px.
+   - Komponen visual modular: `StatusBadge`, `TierChip`, `KpiCard`, `PageHeader`, `EmptyState`, dan `FormSection`.
+
+3. **Konsol Provisioning Pusat (`/desktop/CoreProvisioningConsole`)**:
+   - Desktop console khusus Owner/Developer untuk menerbitkan dan mengelola token lisensi, batas tier dinamis, buletin eksekutif, teks berjalan (*running ticker*), direktori kuota instansi, dan fitur darurat *Reset Password Operator*.
+
+4. **Aplikasi Desktop Instansi Klien (`/desktop/ClientApp`)**:
+   - Aplikasi desktop mandiri untuk pengguna instansi pembeli lisensi dengan fitur *Adaptive Institution Chameleon*, editor in-app Word & Excel RAB, dan *Zero-Download RAM-Only Policy*.
+
+---
+
+## 🌟 Fitur Utama & Keunggulan Enterprise
+
+### 1. Adaptive Institution Chameleon
+Antarmuka dan peristilahan sistem secara dinamis beradaptasi 100% mengikuti jenis instansi pemegang lisensi:
+- **Sekolah / Pendidikan**: Istilah SDM berubah menjadi *Dewan Guru & Tenaga Kependidikan*, template surat mencakup Keterangan Siswa Aktif, Panggilan Wali Murid, SPPD Pengawas.
+- **Pemerintah Desa / Kelurahan**: Istilah SDM menjadi *Perangkat & Staf Kantor Desa*, template mencakup Surat Keterangan Usaha (SKU), Domisili, Pengantar SKCK, Keterangan Tidak Mampu (SKTM).
+- **Perusahaan / PT**: Istilah SDM menjadi *Karyawan & Divisi*, template mencakup Surat Penawaran Kerjasama, Perjanjian Kerja Waktu Tertentu (PKWT), Undangan RUPS, Memo Internal.
+- **Rumah Sakit / Faskes**: Istilah SDM menjadi *Tenaga Medis & Dokter*, template mencakup Rujukan, Keterangan Rawat Inap, Surat Balasan Diagnosa.
+- **Yayasan / Lembaga Sosial**: Istilah SDM menjadi *Pengurus & Relawan*, template mencakup Tanda Terima Hibah, Mandat Program, Laporan Pertanggungjawaban.
+
+### 2. In-Memory Direct RAM Stream (Zero-Download Policy)
+- Berkas template Word (`.docx`) dan lembar kerja RAB (`.xlsx`) diolah langsung di dalam aliran memori RAM (*MemoryStream*).
+- Menjamin perlindungan dokumen kedinasan rahasia tanpa pernah meninggalkan jejak file mentah sementara di folder unduhan lokal pengguna (*No temp file leaks*).
+
+### 3. Tier Entitlement & Kapasitas Dinamis
+Hak akses dan limitasi fitur dikendalikan secara real-time dari Cloud Edge D1:
+- **Trial**: Evaluasi terbatas (3 pengguna, 250 MB storage).
+- **Basic**: Instansi tingkat dasar (5 pengguna, 1 GB storage).
+- **Standard**: Instansi tingkat reguler (15 pengguna, 2.5 GB storage).
+- **Professional**: Instansi korporat skala penuh (50 pengguna, 10 GB storage).
+- **Enterprise**: Kapasitas tanpa batas dedikasi penuh (Kustom pengguna & storage besar).
+
+### 4. Stealth Contact & Support Gateway
+Sistem mengarahkan permohonan upgrade tier, kuota penuh, dan bantuan darurat ke saluran resmi WhatsApp Pusat (`628589584257`) secara terenkripsi di balik tombol berwibawa `[ 💬 Hubungi Kami ]` tanpa mengekspos deretan nomor telanjang di layar.
+
+### 5. Windows Authenticode Code Signing
+Seluruh file biner eksekusi (`.exe`) yang dirilis secara otomatis ditandatangani menggunakan sertifikat digital resmi:
+`CN=Sovereign Executive Systems Code Signing, O=Sovereign Executive Systems, C=ID`.
 
 ---
 
@@ -23,68 +78,102 @@ Sistem otomasi pembuatan dokumen dan surat dinamis berbasis monorepo yang mengga
 
 ```text
 .
-├── .vscode/
-│   ├── launch.json            # Profil F5: Desktop App, Backend Dev, Standalone Exe & Fullstack
-│   ├── tasks.json             # Task build, publish, & dev backend
-│   └── settings.json          # Konfigurasi path SDK dan lingkungan .NET
-├── backend/
+├── backend/                             # Serverless Cloudflare Workers + Hono
 │   ├── migrations/
-│   │   ├── 0001_init.sql      # Skema inti: categories, form_fields, documents
-│   │   ├── 0002_features.sql  # Skema versi, number_sequences, audit_logs
-│   │   ├── seed.sql           # Data awal kategori & fields SPT, SKK, SRP
-│   │   └── seed_features.sql  # Data awal versi app & counter penomoran 2026
+│   │   └── 0001_init.sql                # Skema 8 tabel D1 Edge (tenants, licenses, tiers, users, docs)
 │   ├── src/
-│   │   ├── index.ts           # Hono API, PIN guard, atomic counter, QR web page
-│   │   └── types.ts           # Interface TypeScript & D1 Bindings
-│   ├── wrangler.toml          # Binding D1 & konfigurasi Cloudflare Workers
+│   │   ├── index.ts                     # RESTful Hono API, Auth JWT, RBAC Middleware
+│   │   └── types.ts                     # Definisi tipe data & kontrak request/response
+│   ├── wrangler.toml                    # Konfigurasi binding Cloudflare D1
 │   └── package.json
+│
+├── database/
+│   └── seed.sql                         # Master data: paket tier, lisensi aktif, preset template
+│
 ├── desktop/
-│   ├── Models/
-│   │   └── AppModels.cs       # Model Category, FormField, Document, AppVersion
-│   ├── Services/
-│   │   ├── DynamicFormService.cs # Renderer form dinamis, MiniWord, API client, agenda
-│   │   └── LocalDraftService.cs  # Cache draf offline, docx scanner & QR generator
-│   ├── MainWindow.xaml        # UI 3 panel (Kategori & Riwayat, Form, Dropzone Scan)
-│   ├── MainWindow.xaml.cs     # Logika bisnis interaksi UI
-│   ├── App.xaml               # Theme, warna modern & style komponen
-│   └── SuratApp.csproj        # .NET 8 WPF dengan MiniWord & QRCoder
-├── build.bat                  # Skrip 1-klik kompilasi SuratApp.exe mandiri
-├── deploy.bat                 # Skrip 1-klik migrasi D1 & deploy Worker ke Cloudflare
-├── package.json               # Skrip monorepo root (npm run dev, build, dll.)
-├── README.md
-└── .gitignore
+│   ├── DesignSystem/                    # [SHARED CLASS LIBRARY] Fluent Design System
+│   │   ├── Assets/                      # Logo resmi (logo.png, app.ico)
+│   │   ├── Controls/                    # StatusBadge, TierChip, KpiCard, PageHeader, EmptyState
+│   │   ├── Converters/                  # Value converters data binding
+│   │   ├── Tokens.xaml                  # Palet warna enterprise, radius, elevasi & spasi
+│   │   ├── Typography.xaml              # Hirarki font Segoe UI Variable
+│   │   └── Components.xaml              # Kamus gabungan resource dictionary
+│   │
+│   ├── CoreProvisioningConsole/         # [KONSOL MASTER/DEVELOPER] Pusat Kendali Lisensi
+│   │   ├── Assets/                      # Ikon & logo ter-embed
+│   │   ├── Models/                      # DevLicenseModel, DevTenantModel, DevBroadcastModel
+│   │   ├── Services/                    # MasterDevService, DevDialogService
+│   │   ├── ViewModels/                  # MVVM CommunityToolkit ViewModels
+│   │   ├── Views/                       # LicensesView, TiersView, BroadcastView, TenantsView, RescueView
+│   │   ├── DevMainWindow.xaml           # FluentWindow dengan Mica backdrop & TitleBar modern
+│   │   └── CoreProvisioningConsole.csproj
+│   │
+│   └── ClientApp/                       # [APLIKASI INSTANSI KLIEN] Sovereign Suite Desktop
+│       ├── Assets/                      # Logo resmi ter-embed
+│       ├── Services/                    # ChameleonTerminologyService, ApiService, SessionService
+│       ├── Models/                      # ClientModels
+│       ├── AuthWindow.xaml              # Layar login & aktivasi lisensi split-screen
+│       ├── MainWindow.xaml              # Workspace dinamis, editor in-app, agenda persuratan
+│       └── ClientApp.csproj
+│
+├── dist/                                # Output direktori file executable siap rilis
+│   ├── ClientApp/                       # ClientApp.exe (Authenticode Signed)
+│   └── CoreProvisioningConsole/         # CoreProvisioningConsole.exe (Authenticode Signed)
+│
+├── build-exe.bat                        # Skrip rilis otomatis single-file .exe kedua aplikasi
+├── sign-exe.ps1                         # Skrip otomatis tanda tangan digital Authenticode
+├── init-local-db.bat                    # Skrip inisialisasi database lokal Cloudflare D1
+└── README.md
 ```
 
 ---
 
-## 🚀 Panduan Eksekusi 1-Klik
+## 🚀 Panduan Menjalankan Secara Lokal
 
-### 1. Build File Executable (.exe) Mandiri di Komputer Lokal
-Cukup klik dua kali pada file:
-```text
-build.bat
+### 1. Prasyarat Sistem
+- **Windows 10 / 11** (Skala DPI 100%–200%).
+- **.NET 8.0 SDK** (x64).
+- **Node.js v18+** & npm.
+- **Cloudflare Wrangler CLI** (`npm i -g wrangler`).
+
+### 2. Inisialisasi Database D1 Lokal
+Jalankan file batch berikut untuk membuat dan mengisi database lokal:
+```cmd
+init-local-db.bat
 ```
-Skrip ini akan mengompilasi seluruh kode menjadi satu file `.exe` mandiri di `dist/desktop/SuratApp.exe` dan langsung membuka folder output di Windows Explorer.
 
-### 2. Menjalankan Backend Dev Server Secara Lokal
-Jalankan di root folder:
-```bash
+### 3. Menjalankan Backend API Dev Server
+```cmd
 npm run dev
 ```
-Backend aktif di `http://127.0.0.1:8787`.
+Server berjalan di alamat: `http://127.0.0.1:8787`.
 
-### 3. Deploy Backend ke Cloudflare Edge (24 Jam)
-Cukup klik dua kali pada file:
-```text
-deploy.bat
+### 4. Mengompilasi & Menerbitkan Executable Mandiri (1-Klik)
+Untuk menghasilkan file `.exe` rilis resmi (*Single-File Self-Contained*) yang otomatis ditandatangani dengan sertifikat digital Authenticode, jalankan:
+```cmd
+build-exe.bat
 ```
-Skrip ini akan mengeksekusi migrasi tabel D1 remote dan mendeploy Worker langsung ke akun Cloudflare Anda.
-*(Pastikan Anda telah menjalankan `npx wrangler login` sebelumnya).*
+File executable siap pakai langsung tersedia di folder:
+- **`dist/CoreProvisioningConsole/CoreProvisioningConsole.exe`** (Konsol Lisensi)
+- **`dist/ClientApp/ClientApp.exe`** (Aplikasi Instansi Klien)
 
 ---
 
-## 🔐 Keamanan & PIN API
+## 🔑 Data Uji Coba & Lisensi Siap Pakai
 
-Setiap operasi tulis (generate dokumen, alokasi nomor surat, upload scan) dilindungi oleh PIN Sekolah:
-- **Default PIN Lokal**: `123456`
-- PIN dapat diubah pada bar atas aplikasi desktop dan diatur pada environment Cloudflare Workers (`APP_PIN`).
+Berikut data lisensi dan kredensial uji coba yang telah terpasang pada master seed database:
+
+### 1. Token Lisensi untuk Instansi Baru
+- **Lisensi Standard**: `ENT-STD-2026-NODE2` (Tier Standard, Alokasi Instansi Reguler)
+- **Lisensi Profesional**: `ENT-PRO-2026-NODE3` (Tier Professional, Alokasi Korporat Penuh)
+- **Lisensi Enterprise**: `ENT-ENT-2026-NODE4` (Tier Enterprise, Alokasi Dedicated Uncapped)
+- **Lisensi Evaluasi**: `ENT-TRL-2026-DEMO` (Tier Trial, Evaluasi Terbatas)
+
+### 2. Kredensial Akses Konsol Master
+- **Kunci Akses Master**: `DEV-MASTER-GODMODE-2026` (Terverifikasi otomatis di `CoreProvisioningConsole`).
+
+---
+
+## 🛡️ Lisensi & Hak Cipta
+Hak Cipta © 2026 **Sovereign Executive Systems**. Seluruh hak cipta dilindungi undang-undang.
+Dilarang mendistribusikan, merekayasa balik, atau memodifikasi biner piranti lunak tanpa izin tertulis dari pemilik hak cipta.

@@ -1,0 +1,465 @@
+<UserControl x:Class="CoreProvisioningConsole.Views.LicensesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:ds="clr-namespace:DesignSystem.Controls;assembly=DesignSystem"
+             xmlns:conv="clr-namespace:DesignSystem.Converters;assembly=DesignSystem">
+
+    <Grid Background="{DynamicResource SurfaceAppBgBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- PageHeader -->
+            <RowDefinition Height="*"/>    <!-- Scrollable Content -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. FORMAL ENTERPRISE PAGE HEADER -->
+        <ds:PageHeader Grid.Row="0"
+                       Title="Manajemen Lisensi &amp; Alokasi Entitlement"
+                       Subtitle="Penerbitan kunci lisensi instansi, modifikasi kuota khusus, dan eskalasi tier instan."
+                       PrimaryActionText="Terbitkan Lisensi Baru"
+                       PrimaryActionIcon="Key24"
+                       PrimaryActionCommand="{Binding OpenGenerateDialogCommand}"
+                       SecondaryActionText="Segarkan"
+                       SecondaryActionIcon="ArrowSync24"
+                       SecondaryActionCommand="{Binding LoadLicensesCommand}"
+                       IsLoading="{Binding IsLoading}"/>
+
+        <!-- 2. MAIN SCROLLABLE CONTENT BODY -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="28,24">
+            <StackPanel MaxWidth="1600">
+
+                <!-- 2.1 ROW OF 4 KPI METRIC CARDS -->
+                <Grid Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- KPI 1: Total Licenses -->
+                    <ds:KpiCard Grid.Column="0"
+                                Title="TOTAL LISENSI"
+                                Value="{Binding TotalLicenses}"
+                                Description="Seluruh alokasi kunci terdaftar di Cloudflare D1"
+                                Icon="Key24"/>
+
+                    <!-- KPI 2: Active Claimed -->
+                    <ds:KpiCard Grid.Column="2"
+                                Title="TERKLAIM AKTIF"
+                                Value="{Binding ClaimedLicenses}"
+                                Description="Instansi terhubung dan beroperasi resmi"
+                                Icon="CheckmarkCircle24"/>
+
+                    <!-- KPI 3: Unclaimed / Ready -->
+                    <ds:KpiCard Grid.Column="4"
+                                Title="BELUM DIKLAIM"
+                                Value="{Binding UnclaimedLicenses}"
+                                Description="Siap dialokasikan untuk pemesan baru"
+                                Icon="Clock24"/>
+
+                    <!-- KPI 4: Tier Distribution -->
+                    <ds:KpiCard Grid.Column="6"
+                                Title="DISTRIBUSI TIER"
+                                Value="{Binding FilteredLicenses.Count}"
+                                Description="{Binding TierDistribution}"
+                                Icon="Shield24"/>
+                </Grid>
+
+                <!-- 2.2 TOOLBAR (Search, Filters, Export) -->
+                <Border Background="{DynamicResource SurfaceCardBrush}"
+                        BorderBrush="{DynamicResource BorderLightBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{StaticResource RadiusMedium}"
+                        Padding="16,12"
+                        Margin="0,0,0,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="340"/> <!-- Search Box -->
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="180"/> <!-- Tier Filter -->
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="180"/> <!-- Status Filter -->
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/> <!-- Export Button -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Search Box -->
+                        <ui:AutoSuggestBox Grid.Column="0"
+                                           PlaceholderText="Cari kode lisensi, pembeli, instansi..."
+                                           Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Icon="Search24"/>
+
+                        <!-- Tier Filter -->
+                        <ComboBox Grid.Column="2"
+                                  ItemsSource="{Binding TierFilterOptions}"
+                                  SelectedItem="{Binding SelectedTierFilter, Mode=TwoWay}"/>
+
+                        <!-- Status Filter -->
+                        <ComboBox Grid.Column="4"
+                                  ItemsSource="{Binding StatusFilterOptions}"
+                                  SelectedItem="{Binding SelectedStatusFilter, Mode=TwoWay}"/>
+
+                        <!-- Export CSV Button -->
+                        <ui:Button Grid.Column="6"
+                                   Appearance="Secondary"
+                                   Command="{Binding ExportCsvCommand}"
+                                   ToolTip="Ekspor seluruh daftar lisensi saat ini ke file CSV di Desktop">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:SymbolIcon Symbol="ArrowDownload24" FontSize="14" Margin="0,0,8,0"/>
+                                <TextBlock Text="Ekspor CSV" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ui:Button>
+                    </Grid>
+                </Border>
+
+                <!-- 2.3 FLUENT DATA TABLE OR EMPTY STATE -->
+                <Border Background="{DynamicResource SurfaceCardBrush}"
+                        BorderBrush="{DynamicResource BorderLightBrush}"
+                        BorderThickness="1"
+                        CornerRadius="{StaticResource RadiusMedium}"
+                        MinHeight="360"
+                        ClipToBounds="True">
+                    <Grid>
+                        <!-- Table View -->
+                        <DataGrid ItemsSource="{Binding FilteredLicenses}"
+                                  SelectedItem="{Binding SelectedLicense, Mode=TwoWay}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserResizeRows="False"
+                                  IsReadOnly="True"
+                                  GridLinesVisibility="Horizontal"
+                                  RowHeight="54"
+                                  HeadersVisibility="Column"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+
+                            <DataGrid.Columns>
+                                <!-- Col 1: Kode Lisensi -->
+                                <DataGridTemplateColumn Header="Kode Lisensi" Width="240">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,8,0">
+                                                <TextBlock Text="{Binding LicenseKey}"
+                                                           Style="{StaticResource CodeStyle}"
+                                                           FontSize="13"
+                                                           FontWeight="Bold"
+                                                           VerticalAlignment="Center"/>
+                                                <ui:Button Appearance="Transparent"
+                                                           Padding="6,4"
+                                                           Margin="6,0,0,0"
+                                                           Command="{Binding DataContext.CopyLicenseKeyCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                           CommandParameter="{Binding}"
+                                                           ToolTip="Salin Kode Lisensi ke Clipboard">
+                                                    <ui:SymbolIcon Symbol="Copy24" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"/>
+                                                </ui:Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- Col 2: Tier Chip -->
+                                <DataGridTemplateColumn Header="Paket Tier" Width="140">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ds:TierChip TierId="{Binding TierId}" Margin="12,0"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- Col 3: Catatan Pembeli -->
+                                <DataGridTemplateColumn Header="Catatan Pembeli / Pemesan" Width="260">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding BuyerNote, Converter={StaticResource NullOrEmptyToPlaceholderConverter}, ConverterParameter='-'}"
+                                                       Style="{StaticResource BodyStyle}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip="{Binding BuyerNote}"
+                                                       Margin="12,0"
+                                                       VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- Col 4: Instansi Terkait -->
+                                <DataGridTemplateColumn Header="Instansi Terkait" Width="240">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding InstitutionName, Converter={StaticResource NullOrEmptyToPlaceholderConverter}, ConverterParameter='Belum terhubung'}"
+                                                       Foreground="{Binding InstitutionName, Converter={StaticResource NullOrEmptyToDimmedBrushConverter}}"
+                                                       Style="{StaticResource BodyStyle}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Margin="12,0"
+                                                       VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- Col 5: Status Badge -->
+                                <DataGridTemplateColumn Header="Status" Width="160">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="12,0" VerticalAlignment="Center">
+                                                <ds:StatusBadge Text="{Binding StatusLabel}" Variant="{Binding StatusBadgeVariant}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- Col 6: Aksi Cepat -->
+                                <DataGridTemplateColumn Header="Aksi Kelola" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
+                                                <!-- Upgrade Button -->
+                                                <ui:Button Appearance="Secondary"
+                                                           Padding="10,5"
+                                                           Margin="0,0,6,0"
+                                                           Command="{Binding DataContext.OpenUpgradeDialogCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                           CommandParameter="{Binding}"
+                                                           ToolTip="Ubah / Tingkatkan Paket Tier Instansi">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <ui:SymbolIcon Symbol="ArrowUp24" FontSize="12" Margin="0,0,4,0"/>
+                                                        <TextBlock Text="Upgrade" FontSize="11" FontWeight="SemiBold"/>
+                                                    </StackPanel>
+                                                </ui:Button>
+
+                                                <!-- Detail Button -->
+                                                <ui:Button Appearance="Transparent"
+                                                           Padding="8,5"
+                                                           Command="{Binding DataContext.SelectLicenseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                           CommandParameter="{Binding}"
+                                                           ToolTip="Lihat Rincian Lengkap Lisensi">
+                                                    <ui:SymbolIcon Symbol="Info24" FontSize="14" Foreground="{DynamicResource TextMutedBrush}"/>
+                                                </ui:Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Empty State (Shown if no items match) -->
+                        <ds:EmptyState Title="Tidak Ditemukan Lisensi"
+                                       Message="Tidak ada kunci lisensi yang sesuai dengan kriteria filter atau pencarian Anda."
+                                       Icon="DocumentSearch24"
+                                       ActionText="Muat Ulang Semua"
+                                       ActionCommand="{Binding LoadLicensesCommand}"
+                                       Visibility="{Binding FilteredLicenses.Count, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ================= MODAL 1: GENERATE LISENSI BARU ================= -->
+        <Grid Background="#70000000"
+              Visibility="{Binding IsGenerateDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Panel.ZIndex="1000"
+              Grid.RowSpan="2">
+            <Border Width="520"
+                    Background="{DynamicResource SurfaceCardBrush}"
+                    BorderBrush="{DynamicResource BorderLightBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource RadiusLarge}"
+                    Padding="28"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Penerbitan Kunci Lisensi Baru" Style="{StaticResource TitleStyle}" FontSize="18"/>
+                            <TextBlock Text="Kunci unik akan otomatis dibuat dan siap diserahkan ke instansi pembeli." Style="{StaticResource BodyMutedStyle}"/>
+                        </StackPanel>
+                        <ui:Button Grid.Column="1"
+                                   Appearance="Transparent"
+                                   Command="{Binding CloseGenerateDialogCommand}">
+                            <ui:SymbolIcon Symbol="Dismiss24" FontSize="16"/>
+                        </ui:Button>
+                    </Grid>
+
+                    <!-- Form Section: Tier Selection -->
+                    <TextBlock Text="1. Pilih Paket Tier Entitlement" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <ComboBox ItemsSource="{Binding TierFilterOptions}"
+                              SelectedItem="{Binding GenTierId, Mode=TwoWay}"
+                              Margin="0,0,0,16"/>
+
+                    <!-- Form Section: Buyer Note -->
+                    <TextBlock Text="2. Nama Calon Pembeli / Nama Instansi Target *" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <ui:TextBox Text="{Binding GenBuyerNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                PlaceholderText="contoh: Dinas Pendidikan Kab. Sleman"
+                                Margin="0,0,0,16"/>
+
+                    <!-- Form Section: Custom Quota Overrides -->
+                    <Grid Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Batas User Kustom" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Margin="0,0,0,4"/>
+                            <ui:TextBox Text="{Binding GenCustomUsers, Mode=TwoWay}"
+                                        PlaceholderText="Bawaan tier"
+                                        ToolTip="Kosongkan jika menggunakan batas default tier"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Storage MB Kustom" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Margin="0,0,0,4"/>
+                            <ui:TextBox Text="{Binding GenCustomStorage, Mode=TwoWay}"
+                                        PlaceholderText="Bawaan tier"
+                                        ToolTip="Kosongkan jika menggunakan kuota default tier"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Success Result Area if generated -->
+                    <Border Background="{DynamicResource StatusSuccessBgBrush}"
+                            BorderBrush="{DynamicResource StatusSuccessBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource RadiusMedium}"
+                            Padding="16"
+                            Margin="0,0,0,18"
+                            Visibility="{Binding LastGeneratedKey, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="KODE LISENSI BERHASIL DITERBITKAN:" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Foreground="{DynamicResource StatusSuccessFgBrush}"/>
+                            <TextBox Text="{Binding LastGeneratedKey, Mode=OneWay}"
+                                     Style="{StaticResource CodeStyle}"
+                                     FontSize="16"
+                                     FontWeight="Bold"
+                                     Foreground="{DynamicResource StatusSuccessFgBrush}"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     IsReadOnly="True"
+                                     Margin="0,4,0,10"/>
+                            <ui:Button Appearance="Primary"
+                                       Command="{Binding CopyWhatsAppPackageCommand}"
+                                       Padding="14,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon Symbol="Chat24" FontSize="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Salin Paket Kredensial WhatsApp Rapi" Style="{StaticResource CaptionStyle}" Foreground="#FFFFFF" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </ui:Button>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Action Buttons -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ui:Button Grid.Column="1"
+                                   Appearance="Secondary"
+                                   Content="Batal"
+                                   Command="{Binding CloseGenerateDialogCommand}"
+                                   Padding="16,8"/>
+                        <ui:Button Grid.Column="3"
+                                   Appearance="Primary"
+                                   Command="{Binding SubmitGenerateLicenseCommand}"
+                                   Padding="18,8">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:ProgressRing Width="14" Height="14" Margin="0,0,8,0" IsIndeterminate="True"
+                                                 Visibility="{Binding IsGenerating, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <ui:SymbolIcon Symbol="Key24" FontSize="14" Margin="0,0,8,0"
+                                               Visibility="{Binding IsGenerating, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                <TextBlock Text="Terbitkan Lisensi" Foreground="#FFFFFF" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </ui:Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ================= MODAL 2: UPGRADE TIER INSTAN ================= -->
+        <Grid Background="#70000000"
+              Visibility="{Binding IsUpgradeDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Panel.ZIndex="1000"
+              Grid.RowSpan="2">
+            <Border Width="500"
+                    Background="{DynamicResource SurfaceCardBrush}"
+                    BorderBrush="{DynamicResource BorderLightBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource RadiusLarge}"
+                    Padding="28"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Eskalasi Paket Tier Instan" Style="{StaticResource TitleStyle}" FontSize="18"/>
+                            <TextBlock Text="Tingkatkan kapasitas pengguna dan penyimpanan instansi secara langsung." Style="{StaticResource BodyMutedStyle}"/>
+                        </StackPanel>
+                        <ui:Button Grid.Column="1"
+                                   Appearance="Transparent"
+                                   Command="{Binding CloseUpgradeDialogCommand}">
+                            <ui:SymbolIcon Symbol="Dismiss24" FontSize="16"/>
+                        </ui:Button>
+                    </Grid>
+
+                    <!-- Target License Preview -->
+                    <Border Background="{DynamicResource SurfaceCardSecondaryBrush}"
+                            BorderBrush="{DynamicResource BorderLightBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource RadiusMedium}"
+                            Padding="14"
+                            Margin="0,0,0,18">
+                        <StackPanel>
+                            <TextBlock Text="LISENSI TARGET:" Style="{StaticResource CaptionStyle}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding UpgradeTargetLicense.LicenseKey}" Style="{StaticResource CodeStyle}" FontWeight="Bold" Margin="0,2,0,4"/>
+                            <TextBlock Text="{Binding UpgradeTargetLicense.InstitutionName, Converter={StaticResource NullOrEmptyToPlaceholderConverter}, ConverterParameter='Instansi Belum Aktif'}"
+                                       Style="{StaticResource CaptionStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Select Target Tier -->
+                    <TextBlock Text="Pilih Tingkat Tier Baru:" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <ComboBox ItemsSource="{Binding TierFilterOptions}"
+                              SelectedItem="{Binding UpgradeNewTier, Mode=TwoWay}"
+                              Margin="0,0,0,24"/>
+
+                    <!-- Action Buttons -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ui:Button Grid.Column="1"
+                                   Appearance="Secondary"
+                                   Content="Batal"
+                                   Command="{Binding CloseUpgradeDialogCommand}"
+                                   Padding="16,8"/>
+                        <ui:Button Grid.Column="3"
+                                   Appearance="Primary"
+                                   Command="{Binding SubmitUpgradeTierCommand}"
+                                   Padding="18,8">
+                            <StackPanel Orientation="Horizontal">
+                                <ui:ProgressRing Width="14" Height="14" Margin="0,0,8,0" IsIndeterminate="True"
+                                                 Visibility="{Binding IsUpgrading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <ui:SymbolIcon Symbol="ArrowUp24" FontSize="14" Margin="0,0,8,0"
+                                               Visibility="{Binding IsUpgrading, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                <TextBlock Text="Konfirmasi Upgrade" Foreground="#FFFFFF" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </ui:Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+</UserControl>

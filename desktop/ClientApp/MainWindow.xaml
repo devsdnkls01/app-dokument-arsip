@@ -1,0 +1,865 @@
+<Window x:Class="ClientApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sovereign Executive Suite — Enterprise Multi-Tenant Office Suite"
+        Icon="pack://application:,,,/ClientApp;component/Assets/logo.png"
+        Height="880" Width="1380"
+        MinHeight="720" MinWidth="1100"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AlabasterSurfaceBrush}"
+        FontFamily="Segoe UI Variable Text, Segoe UI, Inter, Arial">
+    <Grid>
+        <!-- MAIN APPLICATION GRID -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/> <!-- Bottom Running Text Ticker -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="270"/> <!-- Sidebar Navigation -->
+                <ColumnDefinition Width="*"/>   <!-- Main Content Area -->
+            </Grid.ColumnDefinitions>
+
+            <!-- ================= SIDEBAR (DEEP OBSIDIAN NAVY) ================= -->
+            <Border Grid.Row="0" Grid.Column="0" Background="{StaticResource ObsidianNavyBrush}" BorderBrush="#1E293B" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Brand & Tenant Card -->
+                        <RowDefinition Height="*"/>    <!-- Navigation Menus -->
+                        <RowDefinition Height="Auto"/> <!-- Quota & Bottom Actions -->
+                    </Grid.RowDefinitions>
+
+                    <!-- TOP: BRAND & TENANT BADGE -->
+                    <Border Grid.Row="0" Padding="18,20,18,16" BorderBrush="#1E293B" BorderThickness="0,0,0,1">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="46"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Width="44" Height="44" CornerRadius="8" Background="#FFFFFF" BorderBrush="#334155" BorderThickness="1" ClipToBounds="True">
+                                    <Image x:Name="ImgSidebarLogo"
+                                           Source="pack://application:,,,/ClientApp;component/Assets/logo.png"
+                                           Stretch="Uniform" Margin="2"
+                                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TxtSidebarInstitutionName" Text="Instansi Anda" FontSize="13" FontWeight="Bold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                    <Border HorizontalAlignment="Left" CornerRadius="4" Padding="6,2" Margin="0,3,0,0" Background="#1E3A8A">
+                                        <TextBlock x:Name="TxtSidebarChameleonType" Text="SEKOLAH / PENDIDIKAN" FontSize="9" FontWeight="Bold" Foreground="#93C5FD"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- User Info Pill -->
+                            <Border Background="#1E293B" CornerRadius="8" Padding="10,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock x:Name="TxtSidebarUserName" Text="Nama Pengguna" FontSize="12" FontWeight="SemiBold" Foreground="#F8FAFC" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtSidebarUserEmail" Text="user@instansi.id" FontSize="10" Foreground="#94A3B8" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" x:Name="BrdRoleBadge" Background="#065F46" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtSidebarUserRole" Text="ADMIN" FontSize="9" FontWeight="Bold" Foreground="#A7F3D0"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- CENTER: NAVIGATION MENUS -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10,12,10,12">
+                        <StackPanel>
+                            <!-- Menu 1: Dashboard -->
+                            <RadioButton x:Name="NavDashboard" Style="{StaticResource SidebarNavButton}" IsChecked="True" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🏛️" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Executive Dashboard" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Menu 2: Document Workspace -->
+                            <RadioButton x:Name="NavWorkspace" Style="{StaticResource SidebarNavButton}" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📝" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Ruang Kerja Surat &amp; RAB" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Menu 3: Archives & Lifecycle -->
+                            <RadioButton x:Name="NavArchive" Style="{StaticResource SidebarNavButton}" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📁" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Buku Agenda &amp; Arsip" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Menu 4: Incoming Mails -->
+                            <RadioButton x:Name="NavIncoming" Style="{StaticResource SidebarNavButton}" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📥" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Surat Masuk &amp; Disposisi" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Menu 5: Adaptive SDM & Entities -->
+                            <RadioButton x:Name="NavEntities" Style="{StaticResource SidebarNavButton}" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="👥" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="TxtNavEntitiesTitle" Text="Database SDM Adaptif" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- ADMIN EXCLUSIVE SECTION -->
+                            <TextBlock Text="PENGATURAN RESMI" FontSize="10" FontWeight="Bold" Foreground="#64748B" Margin="14,16,0,6"/>
+
+                            <!-- Menu 6: Template Studio (Admin) -->
+                            <RadioButton x:Name="NavTemplates" Style="{StaticResource SidebarNavButton}" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="📐" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Studio Format &amp; Nomor" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+
+                            <!-- Menu 7: Institution Settings (Admin) -->
+                            <RadioButton x:Name="NavSettings" Style="{StaticResource SidebarNavButton}" Checked="OnNavMenuChanged">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚙️" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Pengaturan &amp; Lisensi" FontSize="13" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- BOTTOM: QUOTA & LOGOUT -->
+                    <Border Grid.Row="2" Padding="16,14" BorderBrush="#1E293B" BorderThickness="0,1,0,0">
+                        <StackPanel>
+                            <!-- Tier Info & Usage -->
+                            <Grid Margin="0,0,0,6">
+                                <TextBlock x:Name="TxtSidebarTierName" Text="PROFESSIONAL TIER" FontSize="11" FontWeight="Bold" Foreground="#38BDF8"/>
+                                <TextBlock x:Name="TxtSidebarStorageUsage" Text="120 MB / 5000 MB" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <ProgressBar x:Name="PbStorageUsage" Height="4" Value="15" Foreground="#38BDF8" Background="#334155" BorderThickness="0" Margin="0,0,0,12"/>
+
+                            <!-- Upgrade Button -->
+                            <Button Content="[ ⬆️ Hubungi Kami untuk Peningkatan Paket ]" Style="{StaticResource SecondaryButton}" Height="34" FontSize="11" Margin="0,0,0,8" Click="OnShowUpgradePricingClick"/>
+
+                            <!-- Logout Button -->
+                            <Button Content="🚪 Keluar (Logout)" Style="{StaticResource DangerButton}" Height="32" FontSize="11" Click="OnLogoutClick"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ================= MAIN VIEW CONTAINER ================= -->
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Top Bar -->
+                    <RowDefinition Height="*"/>    <!-- Center Dynamic View Panel -->
+                </Grid.RowDefinitions>
+
+                <!-- TOP BAR -->
+                <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Padding="24,14">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock x:Name="TxtHeaderTitle" Text="Executive Dashboard" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}"/>
+                            <TextBlock x:Name="TxtHeaderSubtitle" Text="Ringkasan eksekutif tata naskah dinas, peringatan kontrak, dan persetujuan arsip." FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Background="#F1F5F9" CornerRadius="6" Padding="10,6" Margin="0,0,10,0">
+                                <TextBlock x:Name="TxtHeaderTenantPill" Text="KODE: SMAN1-JKT" FontSize="11" FontWeight="Bold" Foreground="{StaticResource SlateDarkBrush}"/>
+                            </Border>
+                            <Button Content="🔄 Segarkan Data" Style="{StaticResource SecondaryButton}" Height="34" Padding="12,0" Click="OnRefreshGlobalDataClick"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- DYNAMIC VIEWS -->
+                <Grid Grid.Row="1" Margin="24">
+                    
+                    <!-- 1. DASHBOARD VIEW -->
+                    <Grid x:Name="ViewDashboard" Visibility="Visible">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <!-- Metrics Row -->
+                                <Grid Margin="0,0,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Total Outgoing Docs -->
+                                    <Border Grid.Column="0" Style="{StaticResource MetricCardStyle}" Margin="0,0,12,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Total Surat Keluar" Style="{StaticResource FormLabelStyle}"/>
+                                            <TextBlock x:Name="TxtDashTotalDocs" Text="0" Style="{StaticResource MetricValueStyle}"/>
+                                            <TextBlock Text="Dokumen dinas diterbitkan" Style="{StaticResource CaptionTextStyle}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Total RAB Budget -->
+                                    <Border Grid.Column="1" Style="{StaticResource MetricCardStyle}" Margin="0,0,12,0">
+                                        <StackPanel>
+                                            <TextBlock x:Name="TxtDashRabLabel" Text="Total Anggaran RAB" Style="{StaticResource FormLabelStyle}"/>
+                                            <TextBlock x:Name="TxtDashTotalBudget" Text="Rp 0" Style="{StaticResource MetricValueStyle}" Foreground="{StaticResource RoyalSapphireBrush}"/>
+                                            <TextBlock Text="Akumulasi proposal disetujui" Style="{StaticResource CaptionTextStyle}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Waiting Physical Scan -->
+                                    <Border Grid.Column="2" Style="{StaticResource MetricCardStyle}" Margin="0,0,12,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Menunggu Scan Basah" Style="{StaticResource FormLabelStyle}"/>
+                                            <TextBlock x:Name="TxtDashWaitingScan" Text="0" Style="{StaticResource MetricValueStyle}" Foreground="{StaticResource ChampagneGoldBrush}"/>
+                                            <TextBlock Text="Belum ada bukti TTD &amp; stempel" Style="{StaticResource CaptionTextStyle}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Verified Scans -->
+                                    <Border Grid.Column="3" Style="{StaticResource MetricCardStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="Arsip Terverifikasi" Style="{StaticResource FormLabelStyle}"/>
+                                            <TextBlock x:Name="TxtDashVerifiedScan" Text="0" Style="{StaticResource MetricValueStyle}" Foreground="{StaticResource EmeraldBrush}"/>
+                                            <TextBlock Text="Lengkap fisik &amp; digital" Style="{StaticResource CaptionTextStyle}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <!-- Notifications & Contract Expiry Watcher Grid -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Left: Contract & SK Expiry Watcher -->
+                                    <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,0,16,0">
+                                        <StackPanel>
+                                            <TextBlock Text="⏳ Peringatan Dini Berakhirnya Kontrak &amp; SK (30 Hari ke Depan)" FontSize="14" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,12"/>
+                                            <ListView x:Name="LvDashExpiringPersonnel" Height="260" BorderThickness="0" Background="Transparent">
+                                                <ListView.View>
+                                                    <GridView>
+                                                        <GridViewColumn Header="Nama Personel" DisplayMemberBinding="{Binding PrimaryName}" Width="160"/>
+                                                        <GridViewColumn Header="Nomor Induk" DisplayMemberBinding="{Binding PrimaryIdNumber}" Width="120"/>
+                                                        <GridViewColumn Header="TMT" DisplayMemberBinding="{Binding TmtDate}" Width="100"/>
+                                                        <GridViewColumn Header="Akhir Kontrak" DisplayMemberBinding="{Binding ContractEndDate}" Width="110"/>
+                                                    </GridView>
+                                                </ListView.View>
+                                            </ListView>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Right: Admin Approval Notifications -->
+                                    <Border Grid.Column="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
+                                        <StackPanel>
+                                            <TextBlock Text="🛡️ Persetujuan Penghapusan Dokumen" FontSize="14" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,12"/>
+                                            <ListView x:Name="LvDashPendingDeletions" Height="260" BorderThickness="0" Background="Transparent">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="#FEF2F2" BorderBrush="#FCA5A5" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,8">
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding DocNumberFull}" FontWeight="Bold" FontSize="12" Foreground="#991B1B"/>
+                                                                <TextBlock Text="{Binding TitleOrSubject}" FontSize="11" Foreground="#475569" Margin="0,2,0,0"/>
+                                                                <TextBlock Text="{Binding DeletionReason, StringFormat='Alasan: {0}'}" FontSize="11" Foreground="#DC2626" FontStyle="Italic" Margin="0,4,0,0"/>
+                                                                <TextBlock Text="{Binding DeletionRequestedByName, StringFormat='Diajukan oleh: {0}'}" FontSize="10" Foreground="#64748B" Margin="0,2,0,6"/>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Button Content="✅ Setujui Hapus" Style="{StaticResource DangerButton}" Height="26" FontSize="10" Padding="8,0" Click="OnApproveDeleteDocClick" Tag="{Binding Id}"/>
+                                                                    <Button Content="❌ Tolak" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Padding="8,0" Margin="6,0,0,0" Click="OnRejectDeleteDocClick" Tag="{Binding Id}"/>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+
+                    <!-- 2. DOCUMENT WORKSPACE VIEW (DUAL-MODE OFFICE) -->
+                    <Grid x:Name="ViewWorkspace" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"/> <!-- Left Config Panel -->
+                            <ColumnDefinition Width="*"/>   <!-- Office Suite Editor -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- LEFT: TEMPLATE SELECTOR & SMART NUMBERING -->
+                        <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,14,0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="1. PILIH FORMAT SURAT" FontSize="12" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,10"/>
+                                    <ComboBox x:Name="CmbWorkspaceCategory" Height="36" SelectionChanged="OnWorkspaceCategoryChanged" Margin="0,0,0,14"/>
+
+                                    <TextBlock Text="Nomor Surat Otomatis" Style="{StaticResource FormLabelStyle}"/>
+                                    <Border Background="#F1F5F9" CornerRadius="6" Padding="10,8" Margin="0,0,0,6">
+                                        <TextBlock x:Name="TxtWorkspaceGeneratedDocNumber" Text="[Pilih Kategori]" FontWeight="Bold" FontSize="12" Foreground="{StaticResource RoyalSapphireBrush}" TextWrapping="Wrap"/>
+                                    </Border>
+                                    <!-- Gap warning banner -->
+                                    <Border x:Name="BrdNumberGapAlert" Visibility="Collapsed" Background="#FEF3C7" BorderBrush="#FCD34D" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0,0,0,12">
+                                        <TextBlock x:Name="TxtNumberGapMessage" Text="⚠️ Terdeteksi celah nomor kosong!" FontSize="11" Foreground="#92400E" TextWrapping="Wrap"/>
+                                    </Border>
+
+                                    <TextBlock Text="Perihal / Judul Surat" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtWorkspaceDocSubject" Height="36" Padding="8,4" Margin="0,0,0,12"/>
+
+                                    <TextBlock Text="Tujuan / Penerima Surat" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtWorkspaceDocRecipient" Height="36" Padding="8,4" Margin="0,0,0,14"/>
+
+                                    <!-- Quick Smart SDM Lookup -->
+                                    <TextBlock x:Name="TxtWorkspaceSdmLookupLabel" Text="2. DATA PERSONEL (AUTO-FILL)" FontSize="12" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,6,0,8"/>
+                                    <ComboBox x:Name="CmbWorkspacePersonnelLookup" Height="36" SelectionChanged="OnWorkspacePersonnelSelected" Margin="0,0,0,8"/>
+                                    <TextBlock Text="Memilih nama akan otomatis mengisi tag {{personnel.nama}}, {{personnel.nip}}, dan masa kerja." FontSize="10" Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                                    <!-- Actions -->
+                                    <Button Content="💾 Simpan Draf" Style="{StaticResource SecondaryButton}" Height="36" Margin="0,0,0,8" Click="OnSaveDraftDocClick"/>
+                                    <Button Content="☁️ Simpan &amp; Arsipkan" Style="{StaticResource SuccessButton}" Height="36" Margin="0,0,0,8" Click="OnSaveAndArchiveDocClick"/>
+                                    <Button Content="🖨️ Cetak Dokumen (Print)" Style="{StaticResource PrimaryButton}" Height="38" FontWeight="Bold" Click="OnOpenPrintBackstageClick"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- RIGHT: OFFICE SUITE (WORD WYSIWYG & EXCEL RAB GRID) -->
+                        <Border Grid.Column="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/> <!-- Office Tabs -->
+                                    <RowDefinition Height="Auto"/> <!-- Ribbon Toolbar -->
+                                    <RowDefinition Height="*"/>    <!-- Canvas Area -->
+                                </Grid.RowDefinitions>
+
+                                <!-- TABS (WORD VS EXCEL) -->
+                                <Border Grid.Row="0" Background="#F8FAFC" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Padding="12,8">
+                                    <Grid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <RadioButton x:Name="TabOfficeWord" Content="📄 Editor Naskah Word (WYSIWYG)" IsChecked="True" GroupName="OfficeMode" Checked="OnOfficeModeChanged" Padding="14,6" FontWeight="SemiBold" FontSize="12"/>
+                                            <RadioButton x:Name="TabOfficeRab" Content="📊 Proposal &amp; RAB Excel Grid (Click-to-Formula)" GroupName="OfficeMode" Checked="OnOfficeModeChanged" Padding="14,6" FontWeight="SemiBold" FontSize="12" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Content="🔍 Cek Baku KBBI" Style="{StaticResource SecondaryButton}" Height="28" FontSize="11" Click="OnRunSpellCheckClick"/>
+                                            <Button Content="➕ Sisipkan Variabel" Style="{StaticResource SecondaryButton}" Height="28" FontSize="11" Margin="6,0,0,0" Click="OnInsertVariableClick"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <!-- WORD RIBBON TOOLBAR -->
+                                <Border Grid.Row="1" x:Name="WordRibbonBar" Background="#F1F5F9" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Padding="10,6">
+                                    <WrapPanel>
+                                        <!-- Font Family -->
+                                        <ComboBox x:Name="CmbFontFamily" Width="140" Height="28" Margin="0,0,6,0">
+                                            <ComboBoxItem Content="Segoe UI" IsSelected="True"/>
+                                            <ComboBoxItem Content="Arial"/>
+                                            <ComboBoxItem Content="Times New Roman"/>
+                                            <ComboBoxItem Content="Calibri"/>
+                                        </ComboBox>
+                                        <!-- Font Size -->
+                                        <ComboBox x:Name="CmbFontSize" Width="60" Height="28" Margin="0,0,8,0">
+                                            <ComboBoxItem Content="10"/>
+                                            <ComboBoxItem Content="11"/>
+                                            <ComboBoxItem Content="12" IsSelected="True"/>
+                                            <ComboBoxItem Content="14"/>
+                                            <ComboBoxItem Content="16"/>
+                                            <ComboBoxItem Content="18"/>
+                                        </ComboBox>
+                                        <!-- Formatting Buttons -->
+                                        <Button Content="B" FontWeight="Bold" Width="28" Height="28" Margin="0,0,2,0" Click="OnWordBoldClick"/>
+                                        <Button Content="I" FontStyle="Italic" Width="28" Height="28" Margin="0,0,2,0" Click="OnWordItalicClick"/>
+                                        <Button Content="U" Width="28" Height="28" Margin="0,0,8,0" Click="OnWordUnderlineClick"/>
+                                        <!-- Alignment -->
+                                        <Button Content="⬅ Kiri" Width="50" Height="28" Margin="0,0,2,0" Click="OnWordAlignLeftClick"/>
+                                        <Button Content="🀄 Tengah" Width="62" Height="28" Margin="0,0,2,0" Click="OnWordAlignCenterClick"/>
+                                        <Button Content="➡ Kanan" Width="60" Height="28" Margin="0,0,8,0" Click="OnWordAlignRightClick"/>
+                                        <!-- Inserts -->
+                                        <Button Content="📑 Kop Resmi" Height="28" Margin="0,0,4,0" Click="OnInsertKopSuratClick"/>
+                                        <Button Content="✍️ TTD &amp; Stempel" Height="28" Margin="0,0,4,0" Click="OnInsertSignatureBlockClick"/>
+                                        <Button Content="🏁 QR Validasi" Height="28" Click="OnInsertQrValidationClick"/>
+                                    </WrapPanel>
+                                </Border>
+
+                                <!-- EXCEL RIBBON TOOLBAR -->
+                                <Border Grid.Row="1" x:Name="RabRibbonBar" Visibility="Collapsed" Background="#F1F5F9" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Padding="10,6">
+                                    <WrapPanel>
+                                        <Button Content="➕ Tambah Baris Anggaran" Style="{StaticResource SecondaryButton}" Height="28" Margin="0,0,6,0" Click="OnAddRabRowClick"/>
+                                        <Button Content="✖️ Kalikan (Vol × Harga)" Style="{StaticResource SecondaryButton}" Height="28" Margin="0,0,6,0" Click="OnRabMultiplyClick"/>
+                                        <Button Content="➕ Auto-Sum Total RAB" Style="{StaticResource SecondaryButton}" Height="28" Margin="0,0,6,0" Click="OnRabSumTotalClick"/>
+                                        <Button Content="% Hitung Pajak (PPN 11%)" Style="{StaticResource SecondaryButton}" Height="28" Margin="0,0,6,0" Click="OnRabCalculateTaxClick"/>
+                                        <Button Content="Rp Terbilang Otomatis" Style="{StaticResource PrimaryButton}" Height="28" Click="OnRabFormatTerbilangClick"/>
+                                    </WrapPanel>
+                                </Border>
+
+                                <!-- EDITOR CANVAS AREA -->
+                                <Grid Grid.Row="2" Background="#E2E8F0">
+                                    <!-- TAB WORD CANVAS -->
+                                    <ScrollViewer x:Name="WordCanvasContainer" Visibility="Visible" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                        <StackPanel HorizontalAlignment="Center" Margin="24">
+                                            <!-- Ruler representation -->
+                                            <Border Background="#F1F5F9" Height="18" Width="760" BorderBrush="#CBD5E1" BorderThickness="1,1,1,0">
+                                                <TextBlock Text="📏 | · · · 1 · · · 2 · · · 3 · · · 4 · · · 5 · · · 6 · · · 7 · · · 8 · · · 9 · · · 10 · · · 11 · · · 12 · · · 13 · · · 14 · · · 15 · · · 16 · · · 17 · · · 18 · · · 19 · · · 20 cm |" FontSize="9" Foreground="#64748B" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
+                                            <!-- A4 Paper Surface -->
+                                            <Border Background="#FFFFFF" Width="760" MinHeight="980" BorderBrush="#94A3B8" BorderThickness="1" CornerRadius="2" Padding="48">
+                                                <TextBox x:Name="TxtWordRichDocumentContent" AcceptsReturn="True" TextWrapping="Wrap" BorderThickness="0" Background="Transparent" FontSize="13" Text="Ketik isi naskah surat di sini..."/>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+
+                                    <!-- TAB RAB SPREADSHEET CANVAS -->
+                                    <Grid x:Name="RabCanvasContainer" Visibility="Collapsed" Background="#FFFFFF" Margin="16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- RAB Items Grid -->
+                                        <DataGrid x:Name="DgRabGrid" AutoGenerateColumns="False" CanUserAddRows="True" GridLinesVisibility="All" HeadersVisibility="All">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="No" Binding="{Binding ItemNo}" Width="40"/>
+                                                <DataGridTextColumn Header="Uraian Kegiatan / Rincian Belanja" Binding="{Binding Description}" Width="*"/>
+                                                <DataGridTextColumn Header="Volume" Binding="{Binding Volume}" Width="70"/>
+                                                <DataGridTextColumn Header="Satuan" Binding="{Binding Unit}" Width="80"/>
+                                                <DataGridTextColumn Header="Harga Satuan (Rp)" Binding="{Binding UnitPrice, StringFormat={}{0:N0}}" Width="130"/>
+                                                <DataGridTextColumn Header="Sub-Total (Rp)" Binding="{Binding SubTotal, StringFormat={}{0:N0}}" Width="140" IsReadOnly="True"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+                                        <!-- RAB Totals & Terbilang Box -->
+                                        <Border Grid.Row="1" Background="#F8FAFC" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,1,0,0" Padding="16">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="280"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Kalimat Terbilang Otomatis:" FontSize="11" FontWeight="Bold" Foreground="{StaticResource SlateDarkBrush}"/>
+                                                    <TextBlock x:Name="TxtRabTerbilangSentence" Text="Terbilang: Nol Rupiah" FontSize="12" FontStyle="Italic" Foreground="{StaticResource RoyalSapphireBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                                    <Grid Margin="0,0,0,4">
+                                                        <TextBlock Text="Total Anggaran:" FontSize="12" FontWeight="SemiBold"/>
+                                                        <TextBlock x:Name="TxtRabGrandTotal" Text="Rp 0" FontSize="14" FontWeight="Bold" Foreground="{StaticResource RoyalSapphireBrush}" HorizontalAlignment="Right"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- 3. ARCHIVE MANAGER & LIFECYCLE VIEW -->
+                    <Grid x:Name="ViewArchive" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Search & Filter Controls -->
+                        <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="320"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtArchiveSearchQuery" Grid.Column="0" Height="34" Padding="8,4" TextChanged="OnArchiveSearchChanged" Tag="Cari nomor, perihal, penerima..."/>
+                                <ComboBox x:Name="CmbArchiveStatusFilter" Grid.Column="1" Height="34" Margin="10,0,0,0" SelectionChanged="OnArchiveStatusFilterChanged">
+                                    <ComboBoxItem Content="Semua Status Arsip" IsSelected="True"/>
+                                    <ComboBoxItem Content="Kuning: Menunggu Scan Basah" Tag="completed_digital"/>
+                                    <ComboBoxItem Content="Hijau: Terverifikasi Scan" Tag="verified_scan"/>
+                                    <ComboBoxItem Content="Merah: Menunggu Persetujuan Hapus" Tag="pending_deletion"/>
+                                    <ComboBoxItem Content="Abu-abu: Draf Dokumen" Tag="draft"/>
+                                </ComboBox>
+                                <Button Grid.Column="3" Content="📠 Scan Langsung dari Scanner Kantor" Style="{StaticResource SecondaryButton}" Height="34" Click="OnDirectScanHardwareClick"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Archive Documents DataGrid -->
+                        <Border Grid.Row="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8">
+                            <DataGrid x:Name="DgArchiveDocs" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" GridLinesVisibility="Horizontal" HeadersVisibility="Column">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Nomor Surat" Binding="{Binding DocNumberFull}" Width="200" FontWeight="Bold"/>
+                                    <DataGridTextColumn Header="Perihal / Judul" Binding="{Binding TitleOrSubject}" Width="*"/>
+                                    <DataGridTextColumn Header="Penerima" Binding="{Binding Recipient}" Width="150"/>
+                                    <DataGridTextColumn Header="Tanggal Dibuat" Binding="{Binding CreatedAt}" Width="130"/>
+                                    <DataGridTemplateColumn Header="Status Arsip" Width="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{Binding ArchiveStatusBadgeBg}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left">
+                                                    <TextBlock Text="{Binding ArchiveStatusLabel}" Foreground="{Binding ArchiveStatusBadgeFg}" FontSize="11" FontWeight="SemiBold"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <!-- Action Buttons Template -->
+                                    <DataGridTemplateColumn Header="Aksi Dokumen" Width="240">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Content="🖨️ Cetak" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Padding="6,0" Margin="0,0,4,0" Click="OnArchivePrintDocClick" Tag="{Binding}"/>
+                                                    <Button Content="✏️ Re-Edit" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Padding="6,0" Margin="0,0,4,0" Click="OnArchiveReEditDocClick" Tag="{Binding}"/>
+                                                    <Button Content="📤 Upload Scan" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Padding="6,0" Margin="0,0,4,0" Click="OnArchiveUploadScanClick" Tag="{Binding}"/>
+                                                    <Button Content="🗑️" Style="{StaticResource DangerButton}" Height="26" Width="26" FontSize="10" Click="OnArchiveDeleteDocClick" Tag="{Binding}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </Grid>
+
+                    <!-- 4. INCOMING MAILS VIEW -->
+                    <Grid x:Name="ViewIncoming" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="340"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Input New Incoming Mail -->
+                        <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,14,0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="CATAT SURAT MASUK BARU" FontSize="12" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,12"/>
+
+                                    <TextBlock Text="No. Agenda Surat Masuk" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtIncAgendaNo" Height="34" Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Asal Instansi Pengirim" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtIncSenderOrigin" Height="34" Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Nomor Asli Surat" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtIncMailNo" Height="34" Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Perihal Surat Masuk" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtIncSubject" Height="50" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Tingkat Urgensi" Style="{StaticResource FormLabelStyle}"/>
+                                    <ComboBox x:Name="CmbIncUrgency" Height="34" Margin="0,0,0,10">
+                                        <ComboBoxItem Content="Biasa" IsSelected="True"/>
+                                        <ComboBoxItem Content="Penting"/>
+                                        <ComboBoxItem Content="Segera / Rahasia"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Disposisi Ke (Pegawai / Staf)" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtIncDispositionTo" Height="34" Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Instruksi Pimpinan" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtIncInstruction" Height="50" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,16"/>
+
+                                    <Button Content="💾 Simpan Surat Masuk" Style="{StaticResource PrimaryButton}" Height="36" Click="OnSaveIncomingMailClick"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- Incoming Mail List & Disposition Sheet Print -->
+                        <Border Grid.Column="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8">
+                            <DataGrid x:Name="DgIncomingMails" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" GridLinesVisibility="Horizontal">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="No. Agenda" Binding="{Binding AgendaNumber}" Width="90"/>
+                                    <DataGridTextColumn Header="Pengirim" Binding="{Binding SenderOrigin}" Width="160"/>
+                                    <DataGridTextColumn Header="No. Asli Surat" Binding="{Binding OriginalMailNumber}" Width="140"/>
+                                    <DataGridTextColumn Header="Perihal" Binding="{Binding Subject}" Width="*"/>
+                                    <DataGridTextColumn Header="Urgensi" Binding="{Binding UrgencyLevel}" Width="90"/>
+                                    <DataGridTemplateColumn Header="Aksi" Width="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="📑 Cetak Disposisi" Style="{StaticResource SecondaryButton}" Height="26" FontSize="11" Click="OnPrintDispositionSheetClick" Tag="{Binding}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </Grid>
+
+                    <!-- 5. ADAPTIVE SDM & ENTITIES VIEW -->
+                    <Grid x:Name="ViewEntities" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Header Actions -->
+                        <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <TextBlock x:Name="TxtEntitiesMainTitle" Text="Daftar Data SDM (Guru / Tendik)" FontSize="15" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <Button Content="➕ Tambah Personel" Style="{StaticResource PrimaryButton}" Height="34" Margin="0,0,8,0" Click="OnAddPersonnelRecordClick"/>
+                                    <Button Content="➕ Tambah Atribut Spesifik" Style="{StaticResource SecondaryButton}" Height="34" Click="OnAddCustomAttributeClick"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Personnel Table with Auto-Tenure -->
+                        <Border Grid.Row="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8">
+                            <DataGrid x:Name="DgPersonnelRecords" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" GridLinesVisibility="Horizontal">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Nama Personel" Binding="{Binding PrimaryName}" Width="200" FontWeight="Bold"/>
+                                    <DataGridTextColumn Header="Nomor Induk (NIP/NIK)" Binding="{Binding PrimaryIdNumber}" Width="160"/>
+                                    <DataGridTextColumn Header="Tanggal TMT" Binding="{Binding TmtDate}" Width="110"/>
+                                    <DataGridTextColumn Header="Masa Kerja Otomatis" Binding="{Binding CalculatedTenure}" Width="150" Foreground="{StaticResource EmeraldBrush}"/>
+                                    <DataGridTextColumn Header="Akhir Kontrak / SK" Binding="{Binding ContractEndDate}" Width="130"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </Grid>
+
+                    <!-- 6. TEMPLATE STUDIO VIEW (ADMIN ONLY) -->
+                    <Grid x:Name="ViewTemplates" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="340"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Template List & Interactive Numbering Builder -->
+                        <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,14,0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="DAFTAR FORMAT SURAT" FontSize="12" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,10"/>
+                                    <ListBox x:Name="LbTemplateCategories" Height="180" SelectionChanged="OnTemplateCategorySelected" Margin="0,0,0,14"/>
+
+                                    <Separator Background="{StaticResource BorderLightBrush}" Margin="0,0,0,14"/>
+
+                                    <!-- Interactive Numbering Formula Builder -->
+                                    <TextBlock Text="STUDIO RUMUS NOMOR SURAT" FontSize="12" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,8"/>
+                                    <TextBlock Text="Klik blok token di bawah untuk merakit format nomor otomatis:" FontSize="11" Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,10"/>
+
+                                    <WrapPanel Margin="0,0,0,10">
+                                        <Button Content="[Nomor_Urut_3]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Nomor_Urut_3]"/>
+                                        <Button Content="[Nomor_Urut_4]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Nomor_Urut_4]"/>
+                                        <Button Content="[Kode_Klasifikasi]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Kode_Klasifikasi]"/>
+                                        <Button Content="[Kode_Instansi]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Kode_Instansi]"/>
+                                        <Button Content="[Bulan_Romawi]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Bulan_Romawi]"/>
+                                        <Button Content="[Bulan_Angka]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Bulan_Angka]"/>
+                                        <Button Content="[Tahun]" Style="{StaticResource SecondaryButton}" Height="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="[Tahun]"/>
+                                        <Button Content="/" Style="{StaticResource SecondaryButton}" Height="26" Width="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="/"/>
+                                        <Button Content="-" Style="{StaticResource SecondaryButton}" Height="26" Width="26" FontSize="10" Margin="0,0,4,4" Click="OnAddTokenToFormulaClick" Tag="-"/>
+                                    </WrapPanel>
+
+                                    <TextBox x:Name="TxtFormulaEditor" Height="34" Margin="0,0,0,6" TextChanged="OnFormulaEditorChanged"/>
+                                    <!-- Live Preview -->
+                                    <Border Background="#F1F5F9" CornerRadius="4" Padding="8,6" Margin="0,0,0,16">
+                                        <StackPanel>
+                                            <TextBlock Text="Pratinjau Hasil Nomor:" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
+                                            <TextBlock x:Name="TxtFormulaLivePreview" Text="421.2/005/SMAN1-JKT/X/2026" FontWeight="Bold" FontSize="11" Foreground="{StaticResource RoyalSapphireBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Content="💾 Simpan Perubahan Template" Style="{StaticResource PrimaryButton}" Height="36" Click="OnSaveTemplateChangesClick"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- Template Content Editor -->
+                        <Border Grid.Column="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                                    <TextBlock Text="ISI TEMPLATE RESMI" FontSize="13" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}"/>
+                                    <TextBlock Text="Gunakan tag seperti {{personnel.nama}}, {{personnel.nip}}, {{perihal}} untuk penempatan dinamis." FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                </StackPanel>
+                                <TextBox Grid.Row="1" x:Name="TxtTemplateBodyContent" AcceptsReturn="True" TextWrapping="Wrap" Padding="12" FontSize="13"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- 7. INSTITUTION SETTINGS & USERS VIEW (ADMIN ONLY) -->
+                    <Grid x:Name="ViewSettings" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left: Staff / User Management (Bounded by tier max_users) -->
+                        <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,0,14,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                                    <TextBlock Text="MANAJEMEN PENGGUNA INSTANSI" FontSize="13" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}"/>
+                                    <TextBlock x:Name="TxtSettingsUserQuotaLabel" Text="Kapasitas Akun: 2 / 10 Pengguna Aktif" FontSize="11" Foreground="{StaticResource RoyalSapphireBrush}" Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="1" x:Name="DgSettingsUsers" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" GridLinesVisibility="Horizontal">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Nama Lengkap" Binding="{Binding FullName}" Width="*"/>
+                                        <DataGridTextColumn Header="Email / Username" Binding="{Binding EmailUsername}" Width="150"/>
+                                        <DataGridTextColumn Header="Peran" Binding="{Binding Role}" Width="80"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <Button Grid.Row="2" Content="➕ Tambah Akun Staf Baru" Style="{StaticResource PrimaryButton}" Height="36" Margin="0,12,0,0" Click="OnAddStaffUserClick"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Right: Kop Surat & Logo Official Assets -->
+                        <Border Grid.Column="1" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="IDENTITAS KOP &amp; LOGO RESMI" FontSize="13" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}" Margin="0,0,0,14"/>
+
+                                    <TextBlock Text="Alamat Lengkap di Kop Surat" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtSettingsAddress" Height="50" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,12"/>
+
+                                    <TextBlock Text="Nomor Telepon Resmi" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtSettingsPhone" Height="34" Margin="0,0,0,12"/>
+
+                                    <TextBlock Text="Email Resmi" Style="{StaticResource FormLabelStyle}"/>
+                                    <TextBox x:Name="TxtSettingsEmail" Height="34" Margin="0,0,0,16"/>
+
+                                    <Button Content="💾 Simpan Profil Instansi" Style="{StaticResource PrimaryButton}" Height="36" Click="OnSaveInstitutionSettingsClick"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+
+            <!-- ================= BOTTOM RUNNING TEXT TICKER ================= -->
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="BrdRunningTextTicker" Background="#1E40AF" Height="28">
+                <Grid Margin="16,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="📢 PENGUMUMAN PUSAT: " FontWeight="Bold" FontSize="11" Foreground="#FEF08A" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBlock Grid.Column="1" x:Name="TxtBroadcastRunningTicker" Text="Sistem berjalan normal. Layanan Cloudflare D1 terhubung aktif." FontSize="11" Foreground="#FFFFFF" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ================= MODAL 1: BACKSTAGE PRINT VIEW (ANTI-VIRTUAL PDF FILTER) ================= -->
+        <Grid x:Name="ModalPrintBackstage" Visibility="Collapsed" Background="#80000000">
+            <Border Width="1100" Height="740" Background="#F8FAFC" CornerRadius="12" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="380"/> <!-- Left: Print Settings -->
+                        <ColumnDefinition Width="*"/>   <!-- Right: Multi-Page Preview -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- LEFT: PRINT SETTINGS -->
+                    <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,1,0" Padding="24">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="🖨️ Cetak Dokumen Resmi" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ObsidianNavyBrush}"/>
+                                <TextBlock Text="Zero-Download Policy: Hanya mengizinkan pencetakan ke mesin printer fisik." FontSize="11" Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,2,0,18"/>
+
+                                <!-- BIG PRINT BUTTON -->
+                                <Button Content="🖨️ CETAK SEKARANG" Style="{StaticResource SuccessButton}" Height="46" FontSize="15" FontWeight="Bold" Click="OnExecutePhysicalPrintClick"/>
+
+                                <Separator Background="{StaticResource BorderLightBrush}" Margin="0,18,0,18"/>
+
+                                <!-- Copies -->
+                                <TextBlock Text="Jumlah Rangkap (Copies)" Style="{StaticResource FormLabelStyle}"/>
+                                <TextBox x:Name="TxtPrintCopies" Height="36" Text="1" Margin="0,0,0,14"/>
+
+                                <!-- Physical Printer Selector (Filtered) -->
+                                <TextBlock Text="Pilih Printer Fisik Kantor (Anti-PDF Filter)" Style="{StaticResource FormLabelStyle}"/>
+                                <ComboBox x:Name="CmbPhysicalPrinters" Height="36" Margin="0,0,0,14"/>
+
+                                <!-- Paper Size -->
+                                <TextBlock Text="Ukuran Kertas" Style="{StaticResource FormLabelStyle}"/>
+                                <ComboBox x:Name="CmbPrintPaperSize" Height="36" Margin="0,0,0,14">
+                                    <ComboBoxItem Content="A4 (210 x 297 mm)" IsSelected="True"/>
+                                    <ComboBoxItem Content="F4 / Folio (215 x 330 mm)"/>
+                                    <ComboBoxItem Content="Letter (216 x 279 mm)"/>
+                                    <ComboBoxItem Content="Legal (216 x 356 mm)"/>
+                                </ComboBox>
+
+                                <!-- Orientation -->
+                                <TextBlock Text="Orientasi Kertas" Style="{StaticResource FormLabelStyle}"/>
+                                <ComboBox x:Name="CmbPrintOrientation" Height="36" Margin="0,0,0,18">
+                                    <ComboBoxItem Content="Tegak (Portrait)" IsSelected="True"/>
+                                    <ComboBoxItem Content="Mendatar (Landscape)"/>
+                                </ComboBox>
+
+                                <!-- Close Button -->
+                                <Button Content="Batal / Tutup" Style="{StaticResource SecondaryButton}" Height="36" Click="OnClosePrintBackstageClick"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- RIGHT: LIVE MULTI-PAGE PRINT PREVIEW -->
+                    <Grid Grid.Column="1" Background="#E2E8F0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Preview Toolbar -->
+                        <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderLightBrush}" BorderThickness="0,0,0,1" Padding="16,8">
+                            <Grid>
+                                <TextBlock Text="Pratinjau Lembar Cetak (Halaman 1 dari 1)" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBlock Text="Zoom:" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <Slider x:Name="SlPrintZoom" Width="120" Minimum="50" Maximum="150" Value="100" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Paper Preview Container -->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel HorizontalAlignment="Center" Margin="24">
+                                <Border Background="#FFFFFF" Width="520" Height="735" BorderBrush="#94A3B8" BorderThickness="1" CornerRadius="2" Padding="32">
+                                    <Grid>
+                                        <!-- Document Content -->
+                                        <TextBlock x:Name="TxtPrintPreviewBody" Text="Isi naskah dokumen..." TextWrapping="Wrap" LineHeight="20" FontSize="11"/>
+
+                                        <!-- Demo Watermark (If Trial Tier) -->
+                                        <TextBlock x:Name="TxtPrintDemoWatermark" Visibility="Collapsed" Text="VERSI DEMO - TIDAK SAH UNTUK KEDINASAN" FontSize="20" FontWeight="Bold" Foreground="#40DC2626" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                            <TextBlock.RenderTransform>
+                                                <RotateTransform Angle="-35"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ================= MODAL 2: DEVELOPER POPUP PROMO MODAL ================= -->
+        <Grid x:Name="ModalBroadcastPromo" Visibility="Collapsed" Background="#80000000">
+            <Border Width="480" Background="#FFFFFF" CornerRadius="12" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock x:Name="TxtPromoTitle" Text="PENAWARAN KHUSUS UPGRADE" FontSize="16" FontWeight="Bold" Foreground="{StaticResource RoyalSapphireBrush}" Margin="0,0,0,8"/>
+                    <Border Height="180" Background="#F1F5F9" CornerRadius="8" Margin="0,0,0,14">
+                        <TextBlock Text="📢 Banner Promo Developer" FontSize="13" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Button x:Name="BtnPromoCta" Content="[ 💬 Hubungi Kami ]" Style="{StaticResource SuccessButton}" Height="38" FontSize="13" FontWeight="Bold" Click="OnPromoCtaClick" Margin="0,0,0,8"/>
+                    <Button Content="Tutup Pengumuman" Style="{StaticResource SecondaryButton}" Height="34" Click="OnClosePromoModalClick"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Window>

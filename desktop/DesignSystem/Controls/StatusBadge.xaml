@@ -1,0 +1,28 @@
+<UserControl x:Class="DesignSystem.Controls.StatusBadge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="RootBadge">
+    <Border x:Name="BadgeBorder"
+            Background="{Binding ElementName=RootBadge, Path=CurrentBackground}"
+            BorderBrush="{Binding ElementName=RootBadge, Path=CurrentBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{StaticResource RadiusPill}"
+            Padding="8,3"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <!-- Pulsing Status Dot -->
+            <Ellipse Width="6" Height="6"
+                     Fill="{Binding ElementName=RootBadge, Path=CurrentDotBrush}"
+                     Margin="0,0,6,0"
+                     VerticalAlignment="Center"/>
+
+            <!-- Status Text -->
+            <TextBlock Text="{Binding ElementName=RootBadge, Path=Text}"
+                       Foreground="{Binding ElementName=RootBadge, Path=CurrentForeground}"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</UserControl>
