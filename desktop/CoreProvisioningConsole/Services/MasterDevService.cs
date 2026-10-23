@@ -10,7 +10,7 @@ namespace DeveloperStudio.Services
     public class MasterDevService
     {
         private readonly HttpClient _httpClient;
-        private string _baseUrl = "http://127.0.0.1:8787";
+        private string _baseUrl = "https://document-archive-backend.develzy.workers.dev";
         private const string MasterKey = "DEV-MASTER-GODMODE-2026";
 
         public MasterDevService(string? baseUrl = null)

@@ -17,6 +17,8 @@ Thumbs.db
 backend/node_modules/
 backend/dist/
 backend/.wrangler/
+.wrangler/
+backend/.dev.vars
 backend/.env
 backend/.env.local
 *.log

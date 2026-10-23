@@ -12,7 +12,7 @@ namespace ClientApp.Services
     public class ApiClientService
     {
         private readonly HttpClient _httpClient;
-        private string _baseUrl = "http://127.0.0.1:8787";
+        private string _baseUrl = "https://document-archive-backend.develzy.workers.dev";
         private ClientSession? _session;
 
         public ApiClientService(string? baseUrl = null)

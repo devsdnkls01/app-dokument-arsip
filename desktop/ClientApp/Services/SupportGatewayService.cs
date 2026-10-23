@@ -30,7 +30,7 @@ namespace ClientApp.Services
                 string tenantName = session?.Tenant?.InstitutionName ?? "Instansi";
                 string tenantCode = session?.Tenant?.InstitutionCode ?? "-";
                 string tierName = session?.Tier?.DisplayName ?? "Trial";
-                string baseUrl = api?.BaseUrl ?? "http://127.0.0.1:8787";
+                string baseUrl = api?.BaseUrl ?? "https://document-archive-backend.develzy.workers.dev";
 
                 string intentKey = intent switch
                 {
