@@ -329,15 +329,12 @@
                             Visibility="{Binding LastGeneratedKey, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
                         <StackPanel>
                             <TextBlock Text="KODE LISENSI BERHASIL DITERBITKAN:" Style="{StaticResource CaptionStyle}" FontWeight="Bold" Foreground="{DynamicResource StatusSuccessFgBrush}"/>
-                            <TextBox Text="{Binding LastGeneratedKey, Mode=OneWay}"
-                                     Style="{StaticResource CodeStyle}"
-                                     FontSize="16"
-                                     FontWeight="Bold"
-                                     Foreground="{DynamicResource StatusSuccessFgBrush}"
-                                     Background="Transparent"
-                                     BorderThickness="0"
-                                     IsReadOnly="True"
-                                     Margin="0,4,0,10"/>
+                            <TextBlock Text="{Binding LastGeneratedKey, Mode=OneWay}"
+                                       Style="{StaticResource CodeStyle}"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource StatusSuccessFgBrush}"
+                                       Margin="0,4,0,10"/>
                             <ui:Button Appearance="Primary"
                                        Command="{Binding CopyWhatsAppPackageCommand}"
                                        Padding="14,8">
