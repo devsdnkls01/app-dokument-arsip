@@ -122,7 +122,7 @@
                     <ui:NavigationViewItem Content="Reset Password User"
                                            Tag="rescue">
                         <ui:NavigationViewItem.Icon>
-                            <ui:SymbolIcon Symbol="PersonKey24"/>
+                            <ui:SymbolIcon Symbol="PersonLock24"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
