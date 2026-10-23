@@ -1,0 +1,108 @@
+name: Build & Package Desktop Applications
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'desktop/**'
+      - 'SovereignExecutiveSuite.sln'
+      - '.github/workflows/desktop-build.yml'
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Publish as GitHub Release?'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-desktop:
+    name: Build & Sign Windows Desktop Executables
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore Solution Dependencies
+        run: dotnet restore SovereignExecutiveSuite.sln
+
+      - name: Build Solution in Release Mode
+        run: dotnet build SovereignExecutiveSuite.sln -c Release --no-restore
+
+      - name: Publish ClientApp (Single-File win-x64)
+        run: >
+          dotnet publish desktop/ClientApp/ClientApp.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -o ./publish/ClientApp
+
+      - name: Publish CoreProvisioningConsole (Single-File win-x64)
+        run: >
+          dotnet publish desktop/CoreProvisioningConsole/CoreProvisioningConsole.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -o ./publish/CoreProvisioningConsole
+
+      - name: Apply Authenticode Code Signing
+        shell: powershell
+        run: |
+          powershell -ExecutionPolicy Bypass -File ./sign-exe.ps1 -DistPath "./publish"
+
+      - name: Package Applications into ZIP Archives
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path ./artifacts
+          Compress-Archive -Path ./publish/ClientApp/* -DestinationPath ./artifacts/ClientApp-win-x64.zip -Force
+          Compress-Archive -Path ./publish/CoreProvisioningConsole/* -DestinationPath ./artifacts/CoreProvisioningConsole-win-x64.zip -Force
+          Compress-Archive -Path ./publish/* -DestinationPath ./artifacts/SovereignExecutiveSuite-win-x64-all.zip -Force
+          Write-Host "ZIP Packages Created Successfully in ./artifacts"
+
+      - name: Upload ClientApp Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClientApp-win-x64
+          path: ./artifacts/ClientApp-win-x64.zip
+          retention-days: 30
+
+      - name: Upload CoreProvisioningConsole Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CoreProvisioningConsole-win-x64
+          path: ./artifacts/CoreProvisioningConsole-win-x64.zip
+          retention-days: 30
+
+      - name: Upload Complete Suite Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: SovereignExecutiveSuite-Complete-Package
+          path: ./artifacts/SovereignExecutiveSuite-win-x64-all.zip
+          retention-days: 30
+
+      - name: Create GitHub Release (if requested or tag pushed)
+        if: ${{ inputs.create_release == true || startsWith(github.ref, 'refs/tags/v') }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./artifacts/ClientApp-win-x64.zip
+            ./artifacts/CoreProvisioningConsole-win-x64.zip
+            ./artifacts/SovereignExecutiveSuite-win-x64-all.zip
+          tag_name: ${{ github.ref_name }}
+          name: Sovereign Executive Suite ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true

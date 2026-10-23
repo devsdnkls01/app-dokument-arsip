@@ -159,6 +159,22 @@ File executable siap pakai langsung tersedia di folder:
 
 ---
 
+## 📦 Unduh Biner Siap Pakai Langsung dari GitHub (Tanpa Compile)
+
+Proyek ini telah dilengkapi dengan **GitHub Actions CI/CD Pipeline Otomatis** (`.github/workflows/desktop-build.yml`). Setiap pembaruan kode akan otomatis mengompilasi, memaketkan, dan menandatangani file `.exe` dengan sertifikat digital resmi Authenticode.
+
+### Cara Mengunduh File `.exe` di Komputer Rumah / Kantor:
+1. Buka repositori GitHub: **[devsdnkls01/app-dokument-arsip](https://github.com/devsdnkls01/app-dokument-arsip)**
+2. Klik tab **"Actions"** di menu navigasi atas repository.
+3. Klik workflow run terbaru pada workflow **"Build & Package Desktop Applications"**.
+4. Gulir ke bawah ke bagian **Artifacts**:
+   - 📥 **`ClientApp-win-x64`**: File `ClientApp.exe` siap pakai untuk instansi.
+   - 📥 **`CoreProvisioningConsole-win-x64`**: File `CoreProvisioningConsole.exe` khusus developer.
+   - 📥 **`SovereignExecutiveSuite-Complete-Package`**: Paket lengkap berisi kedua aplikasi.
+5. Ekstrak file `.zip` dan jalankan aplikasi secara langsung!
+
+---
+
 ## 🔑 Data Uji Coba & Lisensi Siap Pakai
 
 Berikut data lisensi dan kredensial uji coba yang telah terpasang pada master seed database:
