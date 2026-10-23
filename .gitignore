@@ -36,4 +36,5 @@ obj/
 *.docx
 !desktop/Templates/*.docx
 node_state.dat
+*.zip
 
