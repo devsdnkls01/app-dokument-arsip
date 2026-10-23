@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ClientApp.Models;
 using ClientApp.Services;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
@@ -239,6 +240,13 @@ namespace ClientApp
         private void OnOrderLicenseClick(object sender, RoutedEventArgs e)
         {
             SupportGatewayService.OpenSupportChannel(SupportIntent.NewLicenseOrder, "Permohonan Kode Lisensi Baru", App.ApiClient);
+        }
+
+        private void OnToggleThemeClick(object sender, RoutedEventArgs e)
+        {
+            var current = ApplicationThemeManager.GetAppTheme();
+            var next = current == ApplicationTheme.Dark ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            ApplicationThemeManager.Apply(next);
         }
         #endregion
     }

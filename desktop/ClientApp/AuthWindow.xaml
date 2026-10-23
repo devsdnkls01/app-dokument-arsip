@@ -22,6 +22,28 @@
             <ui:TitleBar.Icon>
                 <ui:ImageIcon Source="pack://application:,,,/ClientApp;component/Assets/logo.png" Width="18" Height="18"/>
             </ui:TitleBar.Icon>
+            <ui:TitleBar.Header>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,14,0" HorizontalAlignment="Right">
+                    <Border Background="{DynamicResource StatusSuccessBgBrush}"
+                            BorderBrush="{DynamicResource StatusSuccessBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource RadiusPill}"
+                            Padding="8,2"
+                            Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Ellipse Width="6" Height="6" Fill="{DynamicResource StatusSuccessDotBrush}" Margin="0,0,6,0"/>
+                            <TextBlock Text="Node D1 Terhubung" Style="{StaticResource CaptionStyle}" Foreground="{DynamicResource StatusSuccessFgBrush}" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <ui:Button Appearance="Transparent"
+                               ToolTip="Ganti Tema (Terang / Gelap)"
+                               Click="OnToggleThemeClick"
+                               Padding="6,4">
+                        <ui:SymbolIcon Symbol="DarkTheme24" FontSize="14"/>
+                    </ui:Button>
+                </StackPanel>
+            </ui:TitleBar.Header>
         </ui:TitleBar>
 
         <!-- 2. SPLIT WORKSPACE -->
