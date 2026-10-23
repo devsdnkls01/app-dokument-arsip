@@ -27,8 +27,12 @@
 
     <!-- CORNER RADIUS TOKENS -->
     <CornerRadius x:Key="RadiusSmall">4</CornerRadius>
+    <CornerRadius x:Key="RadiusSm">4</CornerRadius>
+    <CornerRadius x:Key="RadiusNormal">6</CornerRadius>
     <CornerRadius x:Key="RadiusMedium">8</CornerRadius>
+    <CornerRadius x:Key="RadiusMd">8</CornerRadius>
     <CornerRadius x:Key="RadiusLarge">12</CornerRadius>
+    <CornerRadius x:Key="RadiusLg">12</CornerRadius>
     <CornerRadius x:Key="RadiusPill">999</CornerRadius>
 
     <!-- CORE ENTERPRISE PALETTE (FORMAL NAVY & SLATE) -->
@@ -114,7 +118,9 @@
 
     <SolidColorBrush x:Key="SurfaceAppBgBrush" Color="{StaticResource SurfaceAppBgColor}"/>
     <SolidColorBrush x:Key="SurfaceCardBrush" Color="{StaticResource SurfaceCardColor}"/>
+    <SolidColorBrush x:Key="CardBgBrush" Color="{StaticResource SurfaceCardColor}"/>
     <SolidColorBrush x:Key="SurfaceCardSecondaryBrush" Color="{StaticResource SurfaceCardSecondaryColor}"/>
+    <SolidColorBrush x:Key="SurfaceCardSubtleBrush" Color="{StaticResource SurfaceCardSecondaryColor}"/>
     <SolidColorBrush x:Key="BorderLightBrush" Color="{StaticResource BorderLightColor}"/>
     <SolidColorBrush x:Key="BorderSubtleBrush" Color="{StaticResource BorderSubtleColor}"/>
 

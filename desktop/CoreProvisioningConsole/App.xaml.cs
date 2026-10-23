@@ -47,7 +47,18 @@ namespace DeveloperStudio
             AppDomain.CurrentDomain.UnhandledException += (s, args) =>
             {
                 var ex = args.ExceptionObject as Exception;
-                MessageBox.Show($"Kesalahan Sistem Provisioning: {ex?.Message}", "Peringatan Sistem", MessageBoxButton.OK, MessageBoxImage.Error);
+                var fullDetails = ex?.ToString() ?? "Unknown exception";
+                try { System.IO.File.WriteAllText("crash_provisioning.log", fullDetails); } catch { }
+                MessageBox.Show($"Kesalahan Sistem Provisioning: {ex?.Message}\n\nRincian: {ex?.InnerException?.Message ?? fullDetails}", "Peringatan Sistem", MessageBoxButton.OK, MessageBoxImage.Error);
+            };
+
+            DispatcherUnhandledException += (s, args) =>
+            {
+                var ex = args.Exception;
+                var fullDetails = ex?.ToString() ?? "Unknown exception";
+                try { System.IO.File.WriteAllText("crash_provisioning.log", fullDetails); } catch { }
+                MessageBox.Show($"Kesalahan Sistem Provisioning: {ex?.Message}\n\nRincian: {ex?.InnerException?.Message ?? fullDetails}", "Peringatan Sistem", MessageBoxButton.OK, MessageBoxImage.Error);
+                args.Handled = true;
             };
 
             var mainWindow = _host.Services.GetRequiredService<DevMainWindow>();
