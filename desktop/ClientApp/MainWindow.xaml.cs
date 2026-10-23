@@ -11,10 +11,17 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ClientApp.Models;
 using ClientApp.Services;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
+using MessageBox = System.Windows.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
+using MessageBoxImage = System.Windows.MessageBoxImage;
+using MessageBoxResult = System.Windows.MessageBoxResult;
+using Button = System.Windows.Controls.Button;
 
 namespace ClientApp
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : FluentWindow
     {
         private ObservableCollection<RabItemModel> _rabItems = new();
         private List<CategoryModel> _categories = new();
@@ -1227,6 +1234,13 @@ namespace ClientApp
                     App.ApiClient.Tenant.Email = email;
                 }
             }
+        }
+
+        private void OnToggleThemeClick(object sender, RoutedEventArgs e)
+        {
+            var current = ApplicationThemeManager.GetAppTheme();
+            var next = current == ApplicationTheme.Dark ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            ApplicationThemeManager.Apply(next);
         }
         #endregion
     }

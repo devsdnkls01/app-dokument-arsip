@@ -6,10 +6,14 @@ using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using ClientApp.Models;
 using ClientApp.Services;
+using Wpf.Ui.Controls;
+using MessageBox = System.Windows.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
+using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace ClientApp
 {
-    public partial class AuthWindow : Window
+    public partial class AuthWindow : FluentWindow
     {
         private LicenseVerifyResult? _verifiedLicense;
         private string? _selectedLogoBase64;

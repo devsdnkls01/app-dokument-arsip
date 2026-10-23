@@ -32,11 +32,16 @@
 
   <ItemGroup>
     <!-- Modern Fluent Design System (Windows 11 Aesthetic) -->
-    <PackageReference Include="WPF-UI" Version="4.3.0" />
+    <PackageReference Include="WPF-UI" Version="3.0.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <!-- Network & JSON Serialization -->
     <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
     <!-- Local Image Compression Engine -->
-    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DesignSystem\DesignSystem.csproj" />
   </ItemGroup>
 
   <ItemGroup>
